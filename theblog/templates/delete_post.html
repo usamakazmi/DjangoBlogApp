@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block title %}Delete Blog Post{% endblock %}  
+{% block content %}
+
+
+{% if user.is_authenticated %}
+<div class="container"> 
+    <a href="{% url 'home' %}" class="btn btn-primary">Go Back</a>
+
+    <h1 class="text-center">Delete Blog post</h1>
+    <br><br>
+    <h3 class="text-center">{{post.title}}</h3>
+    <br>
+    <div class="text-center" style="margin-left: 25%;">
+        <div class="col-sm-8">
+            <div class="form-group" >
+            <form method="POST">
+                {% csrf_token %}
+                <h5>Are you Sure?</h5>
+                <br>
+                
+                <button  class="btn btn-danger" >Delete</button>
+            </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% else %}
+Access Denied Login first
+{% endif %}
+
+{% endblock %}
