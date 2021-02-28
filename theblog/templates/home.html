@@ -1,10 +1,27 @@
 {% extends 'base.html' %}
+{% load static %}
+
 {% block title %}My Blog{% endblock %}  
 {% block content %}
 
 
 
 <div class="container">
+    <img src="{% static '/static/theblog/images/user.png' %}" alt="abc">
+    <img src="{% static 'static/theblog/images/user.png' %}" alt="abc">
+    <img src="{% static '/theblog/images/user.png' %}" alt="abc">
+    <img src="{% static 'theblog/images/user.png' %}" alt="abc">
+    <img src="{% static '/images/user.png' %}" alt="abc">
+    <img src="{% static 'images/user.png' %}" alt="abc">
+    
+
+    <img src="/static/theblog/images/user.png" alt="abc">
+    <img src="static/theblog/images/user.png" alt="abc">
+    <img src="/theblog/images/user.png" alt="abc">
+    <img src="theblog/images/user.png" alt="abc">
+    <img src="/images/user.png" alt="abc">
+    <img src="images/user.png" alt="abc">
+   
     <h1 class="text-center">Posts</h1>
     <br><br>
     <div style="margin-left: 0%;">

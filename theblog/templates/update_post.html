@@ -1,4 +1,6 @@
 {% extends 'base.html' %}
+{% load static %}
+
 {% block title %}Edit Blog Post{% endblock %}  
 {% block content %}
 
@@ -23,7 +25,9 @@
 
 </div>
 {% else %}
-Access Denied Login first
+<div class="container">
+    Access Denied Login first
+</div>
 {% endif %}
 
 {% endblock %}

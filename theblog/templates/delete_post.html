@@ -1,4 +1,6 @@
 {% extends 'base.html' %}
+{% load static %}
+
 {% block title %}Delete Blog Post{% endblock %}  
 {% block content %}
 
@@ -27,7 +29,9 @@
 
 </div>
 {% else %}
-Access Denied Login first
+<div class="container">
+    Access Denied Login first
+</div>
 {% endif %}
 
 {% endblock %}

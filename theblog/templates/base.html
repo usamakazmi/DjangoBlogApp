@@ -12,15 +12,35 @@
        My Blog
     {% endblock %}  
   </title>
-  </head>
-  <body>
+  <style>
+    .button {
+      text-align: center;
+      cursor: pointer;
+      outline: none;
+      color: #fff;
+      border: none;
+     
+    }
     
+    .button:hover {background-color:gainsboro}
+    
+    .button:active {
+      background-color: dodgerblue;
+      box-shadow: 0 5px #666;
+      transform: translateY(4px);
+    }
+    </style>
+  </head>
+  <body style="background-color: #f7f7f7;"> 
 
-    <nav class="navbar navbar-toggleable-md navbar-inverse bg-primary" >
+      
+
+    <nav class="navbar navbar-toggleable-md navbar-light" style="border-color:transparent;background-color: #ffffff ; color: #ffffff ;">
+     
       <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <a class="navbar-brand" href="{% url 'home' %}">My Blog</a>
+      <a class="navbar-brand button" style="font-size: 150%;" href="{% url 'home' %}">My Blog</a>
     
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         {% if user.is_authenticated %}
@@ -29,39 +49,48 @@
             
             
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'add-post' %}">Add Post</a>
+              <a class="nav-link " style="color: black;" href="{% url 'add-post' %}">Add Post</a>
             </li>
             
             
           </ul>
         
           <div class="nav-item" style="text-align: right;border-radius: 20%;">
-            <a style=" color:white" class="nav-link" href="{% url 'logout' %}">Logout</a>
+            <a style=" color:black" class="nav-link" href="{% url 'logout' %}">Logout</a>
           </div>
         
         {% else %}
+          <ul class="navbar-nav mr-auto">
+              
+              
+              
+            <li class="nav-item">
+              <a class="nav-link " style="color: black;" href="{% url 'add-post' %}">Home</a>
+            </li>
+            
+          </ul>
+        
           
-          <div class="nav-item" style="position: relative;left:86.5%;border-radius: 20%;">
-            <a style=" color:white" class="nav-link" href="{% url 'login' %}">Login</a>
-          </div>
-          
-          <div class="nav-item" style="display: inline-block;position: relative;left:87%;border-radius: 20%;">
-            <a style=" color:white" class="nav-link" href="{% url 'register' %}">Register</a>
-          </div>
+              <div class="nav-item" >
+                <a style=" color:black;" class="nav-link button" href="{% url 'login' %}">Login</a>
+              </div>
+              
+              <div class="nav-item" >
+                <a style=" color:black;" class="nav-link button" href="{% url 'register' %}">Register</a>
+              </div>
           
         {% endif %}
         
         
           
       </div>
+  
     </nav>
 
     <br><br>
-    <div class="container">
       {% block content %}
 
       {% endblock %}
-    </div>
     <!-- jQuery first, then Tether, then Bootstrap JS. -->
     <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
