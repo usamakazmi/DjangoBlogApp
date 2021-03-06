@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Create a New Blog Category{% endblock %}  
+{% block content %}
+
+{% if user.is_authenticated %}
+<div class="container"> 
+    <a href="{% url 'home' %}" class="btn btn-primary">Go Back</a>
+    <br><br>
+    <div class="card" style="border-radius: 2%;margin-left: 10%;margin-right: 10%;padding: 10%; padding-top: 2%;padding-bottom: 2%;">
+    <br>
+    <h1 class="text-center">Add Category</h1>
+    <br>
+    <div style="margin-left: 25%;">
+        <div class="col-sm-8">
+            <div class="form-group" >
+            <form method="POST">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button class="btn btn-primary" >Add Category</button>
+            </form>
+            </div>
+        </div>
+    </div>
+    </div>
+
+</div>
+{% else %}
+<div class="container">
+    Access Denied Login first
+</div>
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}My Blog{% endblock %}  
+{% block content %}
+
+    
+{% if category_posts %}
+
+    <div class="container">
+        <a href="{% url 'home' %}" class="btn btn-primary">Go Back</a>
+        <br><br>
+    
+        <div class="card" style="border-radius: 2%;margin-left: 5%;margin-right: 5%;padding: 10%; padding-top: 2%;padding-bottom: 2%;">
+        <br>
+        <h1 class="text-center">{{cats}} Category</h1>
+        <br><br>
+        <div style="margin-left: 0%;">
+            <ul>
+                {% for post in category_posts %}
+
+                    <li><a href="{% url 'article-detail' post.pk %}">{{ post.title }}</a> - {{ post.author }} - {{ post.category }} - {{ post.author.first_name }} {{ post.author.last_name }} <br>        
+                        <br> {{ post.body|slice:":200"|safe }} <br> - {{ post.post_date }}  {% if user.is_authenticated %} - <a href="{% url 'update-post' post.pk %}">Edit</a> - <a href="{% url 'delete-post' post.pk %}">Delete</a>{% endif %}</li> 
+                        <hr>
+        
+                {% endfor %}
+            </ul>
+        </div>
+        </div>
+    </div>
+
+{% else %}
+
+<div class="container">
+    Category Does Not Exists
+</div>
+{% endif %}
+
+
+{% endblock %}

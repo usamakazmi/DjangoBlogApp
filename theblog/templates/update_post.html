@@ -7,7 +7,9 @@
 {% if user.is_authenticated %}
 <div class="container"> 
     <a href="{% url 'home' %}" class="btn btn-primary">Go Back</a>
-
+    <br><br>
+    <div class="card" style="border-radius: 2%;margin-left: 10%;margin-right: 10%;padding: 10%; padding-top: 2%;padding-bottom: 2%;">
+    <br>
     <h1 class="text-center">Update Blog post</h1>
     <br>
     <h3>{{post.tilte}}</h3>
@@ -22,7 +24,7 @@
             </div>
         </div>
     </div>
-
+    </div>
 </div>
 {% else %}
 <div class="container">

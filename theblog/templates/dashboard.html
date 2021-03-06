@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Create a New Blog Post{% endblock %}  
+{% block content %}
+
+{% if user.is_authenticated %}
+<div class="container" style="margin-bottom: 20%;"> 
+    <a href="{% url 'home' %}" class="btn btn-primary">Go Back</a>
+    <br><br>
+    <div class="card" style="border-radius: 20px;margin-left: 5%;margin-right: 5%; padding-top: 2%;">
+    <br>
+    <h1 class="text-center">User Dashboard</h1>
+    <br>
+   
+    </div>
+    <div class="card" style="border-radius: 20px;margin-left: 5%;margin-right: 5%; padding: 10%; padding-top: 2%;padding-bottom: 2%;">
+        <br>
+        <h1 class="text-center">User Dashboard</h1>
+        <br>
+    </div>
+
+</div>
+{% else %}
+<div class="container">
+    Access Denied Login first
+</div>
+{% endif %}
+
+{% endblock %}
