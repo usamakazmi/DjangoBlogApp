@@ -4211,7 +4211,8 @@ License - nucleoapp.com/license/
      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
      
      <link rel="stylesheet" href="{% static 'theblog/images/main.css' %}">
-
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+   
      <title> 
      {% block title %}
         Hello
@@ -4394,15 +4395,15 @@ License - nucleoapp.com/license/
     
   }
    </style>
+  
 </head>
 
 <body class="body">
   <div class="wrapper ">
     <div class="sidebar" data-color="white" data-active-color="danger">
-      <div class="tex0t-center logo" style="background-color: deepskyblue;text-align: center;">
-          <img style="width: 17%;" src="{% static 'static/theblog/images/user.png' %}" alt="abc">
-        
-        <a class="navbar-brand button" style="padding: 5%;border-radius: 10%;font-size: 150%;color: black; opacity: .6;" href="{% url 'home' %}">&nbspSentilysis</a>
+      <div class="tex0t-center logo" style="background-color: #30D5C8;text-align: center;">
+          <img style="width: 20%;margin-bottom: 4%;" src="https://firebasestorage.googleapis.com/v0/b/newfyp-c1192.appspot.com/o/user.png?alt=media&token=c513d3ad-e809-456a-8325-ca0c7eb98650" alt="abc">
+        <a class="navbar-brand button" style="padding: 5.4%;border-radius: 10%;font-size: 150%;color: whitesmoke; opacity: .7;font-family: 'Brush Script MT', cursive;" href="{% url 'home' %}">Sentilysis</a>
       
       </div>
       <div class="sidebar-wrapper">
@@ -4410,9 +4411,39 @@ License - nucleoapp.com/license/
           {% if user.is_authenticated %}
 
           <li class=" ">
-            <a href="{% url 'dashboard' %}">
+            <a class="nav-link " style="color: black;" href="{% url 'dashboard' %}">
            
-              <p style="text-align: center;font-size: 130%;color: black; opacity: .6;">Dashboard</p>
+              
+              <p style="text-align: center;font-size: 130%;color: black; opacity: .6;"><img style="width: 25%;display: inline-block;" src="https://firebasestorage.googleapis.com/v0/b/newfyp-c1192.appspot.com/o/dash.png?alt=media&token=f9911ecb-fb46-48ef-a427-cd8908ff7698" alt="abc">
+                Dashboard</p>
+            </a>
+          </li>
+
+          <div class="dropdown-divider"></div>
+        
+          <li class=" ">
+            <a class="nav-link " style="color: black;" href="{% url 'population-chart' %}">
+           
+              <p style="text-align: center;font-size: 130%;color: black; opacity: .6;"><img style="width: 25%;display: inline-block;" src="https://firebasestorage.googleapis.com/v0/b/newfyp-c1192.appspot.com/o/dash.png?alt=media&token=f9911ecb-fb46-48ef-a427-cd8908ff7698" alt="abc">
+                Bar Graph</p>
+            </a>
+          </li>
+          <div class="dropdown-divider"></div>
+        
+          <li class=" ">
+            <a class="nav-link " style="color: black;" href="{% url 'pie-chart' %}">
+           
+              <p style="text-align: center;font-size: 130%;color: black; opacity: .6;"><img style="width: 25%;display: inline-block;" src="https://firebasestorage.googleapis.com/v0/b/newfyp-c1192.appspot.com/o/dash.png?alt=media&token=f9911ecb-fb46-48ef-a427-cd8908ff7698" alt="abc">
+                Pie Chart</p>
+            </a>
+          </li>
+          <div class="dropdown-divider"></div>
+
+          <li class=" ">
+            <a class="nav-link " style="color: black;" href="{% url 'line-chart' %}">
+           
+              <p style="text-align: center;font-size: 130%;color: black; opacity: .6;"><img style="width: 25%;display: inline-block;" src="https://firebasestorage.googleapis.com/v0/b/newfyp-c1192.appspot.com/o/dash.png?alt=media&token=f9911ecb-fb46-48ef-a427-cd8908ff7698" alt="abc">
+                Line Graph</p>
             </a>
           </li>
           <div class="dropdown-divider"></div>
@@ -4420,7 +4451,8 @@ License - nucleoapp.com/license/
           <li class=" ">
             <a class="nav-link " style="color: black;" href="{% url 'add-post' %}">
            
-              <p style="text-align: center;font-size: 130%;color: black; opacity: .6;">Add Post</p>
+              <p style="text-align: center;font-size: 130%;color: black; opacity: .6;"><img style="width: 25%;display: inline-block;" src="https://firebasestorage.googleapis.com/v0/b/newfyp-c1192.appspot.com/o/dash.png?alt=media&token=f9911ecb-fb46-48ef-a427-cd8908ff7698" alt="abc">
+                Add Post</p>
             </a>
           </li>
           <div class="dropdown-divider"></div>
@@ -4428,17 +4460,19 @@ License - nucleoapp.com/license/
           <li class=" ">
             <a class="nav-link " style="color: black;" href="{% url 'add-category' %}">
              
-              <p style="text-align: center;font-size: 130%;color: black; opacity: .6;">Add Category</p>
+              <p style="text-align: center;font-size: 130%;color: black; opacity: .6;"><img style="width: 25%;display: inline-block;" src="https://firebasestorage.googleapis.com/v0/b/newfyp-c1192.appspot.com/o/dash.png?alt=media&token=f9911ecb-fb46-48ef-a427-cd8908ff7698" alt="abc">
+                Add Category</p>
             </a>
           </li>
           <div class="dropdown-divider"></div>
         
           <li class=" " style="text-align: center;" >
               <div class="btn-group">
-                <button style="background-color: transparent;border: transparent;font-size: 95%; margin: 10%;
+                <button style="background-color: transparent;border: transparent;font-size: 95%; margin: 2%;
                 color: black; opacity: .4" type="button" class="btn btn-primary dropdown-toggle" 
                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  Category
+                <img style="width: 25%;display: inline-block;" src="https://firebasestorage.googleapis.com/v0/b/newfyp-c1192.appspot.com/o/dash.png?alt=media&token=f9911ecb-fb46-48ef-a427-cd8908ff7698" alt="abc">
+                Category
                 
                 </button>
                 <div class="dropdown-menu">
@@ -4453,22 +4487,7 @@ License - nucleoapp.com/license/
           </li>
         
 
-          <div class="dropdown-divider"></div>
-        
-          <li class=" ">
-            <a href="./dashboard.html">
-           
-              <p style="text-align: center;font-size: 130%;color: black; opacity: .6;">Dashboard</p>
-            </a>
-          </li>
-          <div class="dropdown-divider"></div>
-        
-          <li class=" ">
-            <a href="./dashboard.html">
-           
-              <p style="text-align: center;font-size: 130%;color: black; opacity: .6;">Dashboard</p>
-            </a>
-          </li>
+         
           <div class="dropdown-divider"></div>
           {% else %}
           {% endif %}
@@ -4482,7 +4501,7 @@ License - nucleoapp.com/license/
       <!-- Navbar -->
                 
     
-      <nav class="navbar navbar-toggleable-md navbar-light" style="border-color:transparent;background-color: deepskyblue ; color: #ffffff ;">
+      <nav class="navbar navbar-toggleable-md navbar-light" style="border-color:transparent;background-color: #30D5C8 ; color: #ffffff ;">
      
         <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -4511,14 +4530,14 @@ License - nucleoapp.com/license/
             </ul>
             <form class="d-flex" style="size: 40%;">
               
-              <input style="margin: 7px;" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-              <button style="background-color: dodgerblue;" class="btn btn-outline-success" type="submit">Search</button>
+              <input style="margin: 7px;border-radius: 10px;height: 70%;" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+              <button class="btn btn-outline-success" style="border-radius: 10px;background-color: deepskyblue;color: white;border: transparent;border-color: transparent;opacity: 5.5;" type="submit">Search</button>
             
             </form>
               &nbsp&nbsp&nbsp&nbsp
             <!-- Example single danger button -->
               <div class="btn-group">
-                <button style="background-color: transparent;border: transparent;font-size: 100%; margin: 2%;" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <button style=" font-family: 'Brush Script MT', cursive;color: whitesmoke ;opacity: 0.7;background-color: transparent;border: transparent;font-size: 100%; margin: 2%;" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   Welcome,  {{user.first_name}} {{user.last_name}} 
                 </button>
                 <div class="dropdown-menu">

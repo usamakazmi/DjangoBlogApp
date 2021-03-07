@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<br>
+    <h1 class="text-center">Bar Graph</h1>
+    <br>
+
+<div class="card" style="height: 100%;width: 90%;border-radius: 2%;margin-left: 5%;margin-right: 10%;padding-top: 2%;padding-bottom: 2%;margin-bottom: 5%;">
+    
+
+        <div style="padding-left: 15%;">
+            <div id="container" style="width: 75%;">
+                <canvas id="population-chart" style="width: 800px;height: 600px;"></canvas>
+            </div>
+
+            <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+            <script>
+ var config = {
+      type: 'bar',
+      data: {
+        datasets: [{
+          data: {{ data|safe }},
+          backgroundColor: [
+            'dodgerblue', 'deepskyblue', '#9AFEFF', '#7FFFD4','#00FFFF',
+            '#7DFDFE','#57FEFF','#8EEBEC','#50EBEC','#4EE2EC','#81D8D0',
+            '#92C7C7','#77BFC7','#78C7C7','#48CCCD','#43C6DB','#46C7C7',
+            '#7BCCB5','#43BFC7','#3EA99F','#3B9C9C','#438D80','#348781',
+            '#307D7E','#5E7D7E','#4C787E','#008080', '#4E8975','#78866B',
+            '#848b79','#617C58',
+          ],
+          label: 'Population'
+        }],
+        labels: {{ labels|safe }}
+      },
+      options: {
+        responsive: true
+      }
+    };
+
+    window.onload = function() {
+      var ctx = document.getElementById('population-chart').getContext('2d');
+      window.myBar = new Chart(ctx, config);
+    };
+            </script>
+        </div>
+</div>
+<br><br><br>
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<br>
+    <h1 class="text-center">Pie Graph</h1>
+    <br>
+
+<div class="card" style="height: 100%;width: 90%;border-radius: 2%;margin-left: 5%;margin-right: 10%;padding-top: 2%;padding-bottom: 2%;margin-bottom: 5%;">
+    
+
+        <div style="padding-left: 15%;">
+            <div id="container" style="width: 50%;">
+                <canvas id="pie-chart" style="width: 200px;height: 150px;"></canvas>
+            </div>
+
+            <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+            <script>
+                var config = {
+                    type: 'pie',
+                    data: {
+                      datasets: [{
+                        data: {{ data|safe }},
+                        backgroundColor: [
+                          'red', 'yellow', 'green', 'dodgerblue', 'deepskyblue'
+                        ],
+                        label: 'Population'
+                      }],
+                      labels: {{ labels|safe }}
+                    },
+                    options: {
+                      responsive: true
+                    }
+                  };
+
+                  window.onload = function() {
+                    var ctx = document.getElementById('pie-chart').getContext('2d');
+                    window.myPie = new Chart(ctx, config);
+                  };
+
+                </script>
+
+            </script>
+        </div>
+</div>
+<br><br><br>
+{% endblock %}

@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<br>
+    <h1 class="text-center">Line Graph</h1>
+    <br>
+
+<div class="card" style="height: 100%;width: 90%;border-radius: 2%;margin-left: 5%;margin-right: 10%;padding-top: 2%;padding-bottom: 2%;margin-bottom: 5%;">
+    
+
+        <div style="padding-left: 15%;">
+            <div id="container" style="width: 75%;">
+                <canvas id="line-chart" style="width: 800px;height: 600px;"></canvas>
+            </div>
+
+            <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+            <script>
+
+                var config = {
+                type: 'line',
+                data: {
+                    datasets: [{
+                    data: {{ data|safe }},
+                    fill: false,
+                        lineTension: 0.1,
+                        backgroundColor: "rgba(75, 192, 192, 0.4)",
+                        borderColor: "rgba(75, 192, 192, 1)",
+                        borderCapStyle: 'butt',
+                        borderDash: [],
+                        borderDashOffset: 0.0,
+                        borderJoinStyle: 'miter',
+                        pointBorderColor: "rgba(75,192,192,1)",
+                        pointBackgroundColor: "#fff",
+                        pointBorderWidth: 1,
+                        pointHoverRadius: 5,
+                        pointHitRadius: 10,
+                        label: 'Population',
+                    }],
+                    labels: {{ labels|safe }}
+                },
+                options: {
+                    responsive: true
+                }
+                };
+
+                window.onload = function() {
+                var ctx = document.getElementById('line-chart').getContext('2d');
+                window.myBar = new Chart(ctx, config);
+                };
+
+            </script>
+        </div>
+</div>
+<br><br><br>
+{% endblock %}

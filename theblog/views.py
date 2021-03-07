@@ -1,7 +1,9 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.http import JsonResponse
+from django.db.models import Sum
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from .models import Post, Category
+from .models import Post, Category, City, Country
 from .forms import PostForm, EditForm
 from django.urls import reverse_lazy
 # detail is 1, list is all
@@ -9,6 +11,56 @@ from django.urls import reverse_lazy
 
 #def home(request):
 #    return render(request,'home.html', {})
+def line_chart(request):
+    labels = []
+    data = []
+
+    queryset = City.objects.values('country__name').annotate(country_population=Sum('population')).order_by('-country_population')
+    for entry in queryset:
+        labels.append(entry['country__name'])
+        data.append(entry['country_population'])
+    
+    #return JsonResponse(data={
+    #    'labels': labels,
+    #    'data': data,
+    #})
+    return render(request, 'line_chart.html', {
+        'labels': labels,
+        'data': data,
+    })
+
+def population_chart(request):
+    labels = []
+    data = []
+
+    queryset = City.objects.values('country__name').annotate(country_population=Sum('population')).order_by('-country_population')
+    for entry in queryset:
+        labels.append(entry['country__name'])
+        data.append(entry['country_population'])
+    
+    #return JsonResponse(data={
+    #    'labels': labels,
+    #    'data': data,
+    #})
+    return render(request, 'population_chart.html', {
+        'labels': labels,
+        'data': data,
+    })
+
+
+def pie_chart(request):
+    labels = []
+    data = []
+
+    queryset = City.objects.order_by('-population')[:5]
+    for city in queryset:
+        labels.append(city.name)
+        data.append(city.population)
+
+    return render(request, 'pie_chart.html', {
+        'labels': labels,
+        'data': data,
+    })
 
 def dashboard(request):
     return render(request,'dashboard.html', {})
