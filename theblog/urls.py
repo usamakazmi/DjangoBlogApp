@@ -1,11 +1,12 @@
 from django.urls import path
 from .  import views
-from .views import HomeView, ArticleDetailView, AddPostView, UpdatePostView, DeletePostView,AddCategoryView, CategoryView
+from .views import ArticleDetailView, AddPostView, UpdatePostView, DeletePostView,AddCategoryView, CategoryView
+#HomeView, 
 
 urlpatterns = [
-    #path('', views.home, name="home"),
+    path('', views.home, name="home"),
     
-    path('', HomeView.as_view(), name="home"),
+    #path('', HomeView.as_view(), name="home"),
 
     path('article/<int:pk>', ArticleDetailView.as_view(), name="article-detail"),
     path('add_post/', AddPostView.as_view(), name="add-post"),
@@ -19,6 +20,9 @@ urlpatterns = [
     path('pie-chart/', views.pie_chart, name='pie-chart'),
     path('population-chart/', views.population_chart, name='population-chart'),
     path('line-chart/', views.line_chart, name='line-chart'),
+    
+    path('facebook/', views.facebook, name="facebook"),
+    path('youtube/', views.youtube, name="youtube"),
     
     #path('population-chart/', views.population_chart, name='population-chart'),
 ]

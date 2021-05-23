@@ -9,7 +9,7 @@
     
 
         <div style="padding-left: 15%;">
-            <div id="container" style="width: 50%;">
+            <div id="container" style="width: 75%;">
                 <canvas id="pie-chart" style="width: 200px;height: 150px;"></canvas>
             </div>
 
@@ -21,7 +21,13 @@
                       datasets: [{
                         data: {{ data|safe }},
                         backgroundColor: [
-                          'red', 'yellow', 'green', 'dodgerblue', 'deepskyblue'
+                        '#DAF7A6','#FFC300','#FF5733','#C70039','#900C3F','#581845',
+                        'dodgerblue', 'deepskyblue', '#9AFEFF', '#7FFFD4','#00FFFF',
+                        '#7DFDFE','#57FEFF','#8EEBEC','#50EBEC','#4EE2EC','#81D8D0',
+                        '#92C7C7','#77BFC7','#78C7C7','#48CCCD','#43C6DB','#46C7C7',
+                        '#7BCCB5','#43BFC7','#3EA99F','#3B9C9C','#438D80','#348781',
+                        '#307D7E','#5E7D7E','#4C787E','#008080', '#4E8975','#78866B',
+                        '#848b79','#617C58',
                         ],
                         label: 'Population'
                       }],

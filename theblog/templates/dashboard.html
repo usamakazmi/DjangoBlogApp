@@ -5,14 +5,441 @@
 {% block content %}
 
 {% if user.is_authenticated %}
-<div class="container" style="margin-bottom: 30%;"> 
+<style>
+    body,
+    html {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        background: #7abecc !important;
+    }
+    .user_card {
+        width: 400px;
+        margin-top: auto;
+        margin-bottom: auto;
+        background: #30D5C8;
+        position: relative;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        padding: 10px;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        border-radius: 5px;
+
+    }
+
+    .form_container {
+        margin-top: 20px;
+    }
+
+    #form-title{
+        color: #fff;
+        
+    }
+
+    .login_btn {
+        width: 100%;
+        background: deepskyblue !important;
+        color: white !important;
+    }
+    .login_btn:focus {
+        box-shadow: none !important;
+        outline: 0px !important;
+    }
+    .login_container {
+        padding: 0 2rem;
+    }
+    .input-group-text {
+        background: #f7ba5b !important;
+        color: white !important;
+        border: 0 !important;
+        width: 35px;
+        
+        border-radius: 0.25rem 0 0 0.25rem !important;
+    }
+    .input_user,
+    .input_pass:focus {
+        box-shadow: none !important;
+        outline: 0px !important;
+    }
+
+    #messages{
+        background-color: grey;
+        color: #fff;
+        padding: 10px;
+        margin-top: 10px;
+    }
+</style>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</head>
+
+
+<style>
+    .sk-cube-grid {
+  width: 120px;
+  height: 120px;
+  margin: 100px auto;
+}
+
+.sk-cube-grid .sk-cube {
+  width: 33%;
+  height: 33%;
+  background-color: #30D5C8;
+  float: left;
+  -webkit-animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out;
+          animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out; 
+}
+.sk-cube-grid .sk-cube1 {
+  -webkit-animation-delay: 0.2s;
+          animation-delay: 0.2s; }
+.sk-cube-grid .sk-cube2 {
+  -webkit-animation-delay: 0.3s;
+          animation-delay: 0.3s; }
+.sk-cube-grid .sk-cube3 {
+  -webkit-animation-delay: 0.4s;
+          animation-delay: 0.4s; }
+.sk-cube-grid .sk-cube4 {
+  -webkit-animation-delay: 0.1s;
+          animation-delay: 0.1s; }
+.sk-cube-grid .sk-cube5 {
+  -webkit-animation-delay: 0.2s;
+          animation-delay: 0.2s; }
+.sk-cube-grid .sk-cube6 {
+  -webkit-animation-delay: 0.3s;
+          animation-delay: 0.3s; }
+.sk-cube-grid .sk-cube7 {
+  -webkit-animation-delay: 0s;
+          animation-delay: 0s; }
+.sk-cube-grid .sk-cube8 {
+  -webkit-animation-delay: 0.1s;
+          animation-delay: 0.1s; }
+.sk-cube-grid .sk-cube9 {
+  -webkit-animation-delay: 0.2s;
+          animation-delay: 0.2s; }
+
+@-webkit-keyframes sk-cubeGridScaleDelay {
+  0%, 70%, 100% {
+    -webkit-transform: scale3D(1, 1, 1);
+            transform: scale3D(1, 1, 1);
+  } 35% {
+    -webkit-transform: scale3D(0, 0, 1);
+            transform: scale3D(0, 0, 1); 
+  }
+}
+
+@keyframes sk-cubeGridScaleDelay {
+  0%, 70%, 100% {
+    -webkit-transform: scale3D(1, 1, 1);
+            transform: scale3D(1, 1, 1);
+  } 35% {
+    -webkit-transform: scale3D(0, 0, 1);
+            transform: scale3D(0, 0, 1);
+  } 
+}
+</style>
+<style>
+    #myProgress {
+      width: 100%;
+      background-color: #ffffff;
+    }
+    
+    #myBar {
+      width: 10%;
+      height: 30px;
+      background-color: #30D5C8;
+      text-align: center;
+      line-height: 30px;
+      color: white;
+    }
+    </style>
+
+<script type="text/javascript">
+    function spinner() {
+        document.getElementsByClassName("loader")[0].style.display = "block";
+        document.backgroundColor = "red";
+    }
+
+    function facebook() {
+        document.getElementsByName("Facebook")[0].style.display = "block";
+        document.getElementsByName("Youtube")[0].style.display = "none";
+        document.getElementsByName("Twitter")[0].style.display = "none";
+        
+        var element = document.getElementById("Facebook");
+        element.scrollIntoView(false);
+    }
+
+    function youtube() {
+        document.getElementsByName("Facebook")[0].style.display = "none";
+        document.getElementsByName("Youtube")[0].style.display = "block";
+        document.getElementsByName("Twitter")[0].style.display = "none";
+        
+        var element = document.getElementById("Youtube");
+        element.scrollIntoView(false);
+    }
+
+    function twitter() {
+        document.getElementsByName("Facebook")[0].style.display = "none";
+        document.getElementsByName("Youtube")[0].style.display = "none";
+        document.getElementsByName("Twitter")[0].style.display = "block";
+        
+        var element = document.getElementById("Twitter");
+        element.scrollIntoView(false);
+    }
+
+
+   
+</script>    
+
+<script>
+    var i = 0;
+    function move(cnt) {
+        document.getElementsByName("myProgress")[0].style.display = "block";
+
+        if (i == 0) {
+        i = 1;
+        var elem = document.getElementById("myBar");
+        var width = 10;
+        var id = setInterval(frame, cnt*400);
+        function frame() {
+            if (width >= 100) {
+            clearInterval(id);
+            i = 0;
+            } else {
+            width++;
+            elem.style.width = width + "%";
+            elem.innerHTML = width  + "%";
+            }
+        }
+        }
+    }
+  </script>
+
+<div class="container" style="margin-bottom: 10%;"> 
     <div class="card" style="border-radius: 20px;margin-left: 5%;margin-right: 5%; padding-top: 2%;">
+        
+        <!--div id="myProgress" name="myProgress" style="position: fixed;top: 10%;right:45%;z-index: 800;display: none;">
+                
+            <div id="myBar">10%</div>
+          </div-->
+
+        <div class="loader" style="position: fixed;top: 20%;right:45%;z-index: 800;display: none;">
+                
+            <div class="sk-cube-grid">
+                <div class="sk-cube sk-cube1"></div>
+                <div class="sk-cube sk-cube2"></div>
+                <div class="sk-cube sk-cube3"></div>
+                <div class="sk-cube sk-cube4"></div>
+                <div class="sk-cube sk-cube5"></div>
+                <div class="sk-cube sk-cube6"></div>
+                <div class="sk-cube sk-cube7"></div>
+                <div class="sk-cube sk-cube8"></div>
+                <div class="sk-cube sk-cube9"></div>
+            </div>    
+            
+              
+
+            
+        </div>
+        
     <br>
     <h1 class="text-center">User Dashboard</h1>
     <br>
-   
+    <br>
+            
+        <div class="text-center">
+            <div id="facebook" onclick="facebook();" class="card" style="width: 200px;height: 190px;display: inline-block;border-radius: 20px;margin-left: 5%;margin-right: 5%; padding-top: 2%;">
+                <img style="border-radius: 12px;width: 200px;display: inline-block;" src="https://firebasestorage.googleapis.com/v0/b/newfyp-c1192.appspot.com/o/Facebook-logo.png?alt=media&token=0eb014e7-a7c3-4d74-a604-ee657cd34a15" alt="abc">
+                    
+            </div>
+            <div id="youtube" onclick="youtube();" class="card" style="width: 200px;height: 190px;display: inline-block;border-radius: 20px;margin-left: 5%;margin-right: 5%; padding-top: 2%;">
+                <img style="border-radius: 100px;width: 140px;display: inline-block;" src="https://firebasestorage.googleapis.com/v0/b/newfyp-c1192.appspot.com/o/8yucw0-youtube-logo-png.png?alt=media&token=c281bbdb-bc74-411c-80ab-41feb35351aa" alt="abc">
+                
+            </div>
+            <div id="twitter" onclick="twitter();" class="card" style="width: 200px;height: 190px;display: inline-block;border-radius: 20px;margin-left: 5%;margin-right: 5%; padding-top: 2%;">
+                
+                <img style="border-radius: 120px;width: 140px;display: inline-block;" src="https://firebasestorage.googleapis.com/v0/b/newfyp-c1192.appspot.com/o/124021.png?alt=media&token=777eef73-ee40-4373-ba1e-a934073f4d81" alt="abc">
+                
+            </div>
+            
+        </div>
+        
+
+        <br>
+
+        
+        <div  name="Facebook" class="container h-100" style="display: none;">
+            <div class="d-flex justify-content-center h-100">
+                <div class="user_card" style="background: #4267B2;">
+                    <br><br>
+                        
+                    <div class="d-flex justify-content-center">
+
+                        <h3 id="form-title">Facebook</h3>
+                    </div>
+                    <div class="d-flex justify-content-center form_container">
+                        <form method="POST" action="{% url 'facebook' %}">
+                            {% csrf_token %}
+                                
+                                <input id="output" style="width: 350px;" type="text" name="postlink" placeholder="Enter Post Link..." class="form-control" autofocus required>
+                                <br>
+                                <input id="count" style="width: 350px;" type="text" name="postCount" placeholder="Enter Comment count..." class="form-control" required>
+                                
+                                <a href="{% url 'facebook' %}" style="text-decoration: none">
+                                    
+                                <div class="d-flex justify-content-center mt-3 login_container">
+                                    <input onclick="spinner();move(document.getElementById('count').value)" class="btn login_btn" type="submit" value="Fetch" style="text-decoration: none" >
+                                    <br>
+                                    
+                                </div>
+                                </a>
+                        </form>
+
+                          
+                    </div>
+                    <br>
+                   
+                      <br>
+                      
+                     
+                    <div class="card" style="border-radius: 7px;padding-left: 5%;padding-right: 5%; padding-top: 2%;">
+                        <br>
+                        {% if temp %}
+                        <h5>Link: </h5>{{postLink}}
+                        <br><br>
+                        <h5>Comments Extracted: Less than </h5>{{temp}}
+                        <br><br>
+                        <h5>Speed: </h5>{{speed}}<h5> Comments per second</h5>
+                        <br>
+                        <h5>Total Time: </h5>{{time}}
+                        <br>
+                        {% else %}
+                        <h4 id="Facebook" class="text-center" >Nothing to show</h4>
+                        
+                        {% endif %}
+                       <br>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+
+
+
+        <div  name="Youtube" class="container h-100" style="display: none;">
+            <div class="d-flex justify-content-center h-100">
+                <div class="user_card" style="background: #DC0000;">
+                    <br><br>
+                        
+                    <div class="d-flex justify-content-center">
+
+                        <h3 id="form-title">Youtube</h3>
+                    </div>
+                    <div class="d-flex justify-content-center form_container">
+                        <form method="POST" action="{% url 'youtube' %}">
+                            {% csrf_token %}
+                                
+                                <input id="output2" style="width: 350px;" type="text" name="postlink2" placeholder="Enter Video Link..." class="form-control" autofocus required>
+                                <br>
+                                <input id="count2" style="width: 350px;" type="text" name="postCount2" placeholder="Enter Comment count..." class="form-control" required>
+                                
+                                <a href="{% url 'youtube' %}" style="text-decoration: none">
+                                <div class="d-flex justify-content-center mt-3 login_container">
+                                    <input onclick="spinner();move(document.getElementById('count2').value)" class="btn login_btn" type="submit" value="Fetch" style="text-decoration: none" >
+                                    <br>
+                                    
+                                </div>
+                                </a>
+                        </form>
+
+                          
+                    </div>
+                    <br>
+                    <div class="card" style="border-radius: 7px;padding-left: 5%;padding-right: 5%; padding-top: 2%;">
+                        <br>
+                        {% if temp2 %}
+                        <h5>Link: </h5>{{postLink2}}
+                        <br><br>
+                        <h5>Comments Extracted: Less than </h5>{{temp2}}
+                        <br><br>
+                        <h5>Speed: </h5>{{speed2}}<h5> Comments per second</h5>
+                        <br>
+                        <h5>Total Time: </h5>{{time2}}
+                        <br>
+                        {% else %}
+                        <h4 id="Youtube" class="text-center" >Nothing to show</h4>
+                        
+                        {% endif %}
+                       <br>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+
+
+        
+        <div  name="Twitter" class="container h-100" style="display: none;">
+            <div class="d-flex justify-content-center h-100">
+                <div class="user_card" style="background: #1DA1F2;">
+                    <br><br>
+                        
+                    <div class="d-flex justify-content-center">
+
+                        <h3 id="form-title">Twitter</h3>
+                    </div>
+                    <div class="d-flex justify-content-center form_container">
+                        <form method="POST" action="{% url 'facebook' %}">
+                            {% csrf_token %}
+                                
+                                <input id="output" style="width: 350px;" type="text" name="postlink" placeholder="Enter Hashtag..." class="form-control" autofocus required>
+                                <a href="{% url 'facebook' %}" style="text-decoration: none">
+                                <div class="d-flex justify-content-center mt-3 login_container">
+                                    <input onclick="spinner()" class="btn login_btn" type="submit" value="Fetch" style="text-decoration: none" >
+                                    <br>
+                                    
+                                </div>
+                                </a>
+                        </form>
+
+                          
+                    </div>
+                    <br>
+                    <div class="card" style="border-radius: 7px;padding-left: 5%;padding-right: 5%; padding-top: 2%;">
+                        <br>
+                        {% if temp %}
+                        <h5>Tag: </h5>{{postLink}}
+                        <br><br>
+                        <h5>Tweets Extracted: Less than </h5>{{temp}}
+                        <br><br>
+                        <h5>Speed: </h5>{{speed}}<h5> Tweets per second</h5>
+                        <br>
+                        <h5>Total Time: </h5>{{time}}
+                        <br>
+                        {% else %}
+                        <h4 id="Twitter" class="text-center" >Nothing to show</h4>
+                        
+                        {% endif %}
+                       <br>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+
+
+
+        <br><br>
+
     </div>
-    
 
 </div>
 {% else %}

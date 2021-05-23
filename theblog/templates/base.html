@@ -4388,22 +4388,97 @@ License - nucleoapp.com/license/
   .button:hover {
     background-color:dodgerblue;
     transition: 0.3s;
+    ;
+   
+    
   }
+  .button:hover a {
+    color: black;
+    
+  }
+  
   .button:active {
     background-color: dodgerblue;
     
     
   }
-   </style>
+      /* width */
+  ::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+  }
   
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #f7f7f7; 
+  }
+
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+  }
+   </style>
+
+<style>
+ 
+  #a2 {
+    /* Same as before */
+    background: linear-gradient(to right, purple, midnightblue 50%, black 50%);
+  }
+  #a2 {
+    /* Same as before */
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-size: 200% 100%;
+    background-position: 100%;
+  }
+  #a2 {
+    /* Same as before */
+    transition: background-position 275ms ease;
+  }
+  #a2:hover {
+    background-position: 0 100%;
+  }
+  </style>
+
+
+<style>
+ 
+#a {
+  /* Same as before */
+  background: linear-gradient(to right, midnightblue, deepskyblue 50%, #f7f7f7 50%);
+}
+#a {
+  /* Same as before */
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-size: 200% 100%;
+  background-position: 100%;
+}
+#a {
+  /* Same as before */
+  transition: background-position 275ms ease;
+}
+#a:hover {
+  background-position: 0 100%;
+}
+</style>
+
+
 </head>
 
-<body class="body">
+<body class="body"  scrollbar-width: thin>
   <div class="wrapper ">
-    <div class="sidebar" data-color="white" data-active-color="danger">
+    <div id="myDIV" class="sidebar" data-color="white" data-active-color="danger" style="">
       <div class="tex0t-center logo" style="background-color: #30D5C8;text-align: center;">
           <img style="width: 20%;margin-bottom: 4%;" src="https://firebasestorage.googleapis.com/v0/b/newfyp-c1192.appspot.com/o/user.png?alt=media&token=c513d3ad-e809-456a-8325-ca0c7eb98650" alt="abc">
-        <a class="navbar-brand button" style="padding: 5.4%;border-radius: 10%;font-size: 150%;color: whitesmoke; opacity: .7;font-family: 'Brush Script MT', cursive;" href="{% url 'home' %}">Sentilysis</a>
+        <a id="a" class="navbar-brand button" style="padding: 5.4%;border-radius: 10%;font-size: 150%;color: whitesmoke; opacity: .7;font-family: 'Brush Script MT', cursive;" href="{% url 'home' %}">Sentilysis</a>
       
       </div>
       <div class="sidebar-wrapper">
@@ -4424,8 +4499,8 @@ License - nucleoapp.com/license/
           <li class=" ">
             <a class="nav-link " style="color: black;" href="{% url 'population-chart' %}">
            
-              <p style="text-align: center;font-size: 130%;color: black; opacity: .6;"><img style="width: 25%;display: inline-block;" src="https://firebasestorage.googleapis.com/v0/b/newfyp-c1192.appspot.com/o/dash.png?alt=media&token=f9911ecb-fb46-48ef-a427-cd8908ff7698" alt="abc">
-                Bar Graph</p>
+              <p style="text-align: center;font-size: 130%;color: black; opacity: .6;"><img style="width: 15%;display: inline-block;opacity: 0.7;" src="https://firebasestorage.googleapis.com/v0/b/newfyp-c1192.appspot.com/o/bar.png?alt=media&token=b796e513-3407-43cd-bd3d-ed698b2944d6" alt="abc">
+                &nbsp;Bar Graph</p>
             </a>
           </li>
           <div class="dropdown-divider"></div>
@@ -4433,8 +4508,8 @@ License - nucleoapp.com/license/
           <li class=" ">
             <a class="nav-link " style="color: black;" href="{% url 'pie-chart' %}">
            
-              <p style="text-align: center;font-size: 130%;color: black; opacity: .6;"><img style="width: 25%;display: inline-block;" src="https://firebasestorage.googleapis.com/v0/b/newfyp-c1192.appspot.com/o/dash.png?alt=media&token=f9911ecb-fb46-48ef-a427-cd8908ff7698" alt="abc">
-                Pie Chart</p>
+              <p style="text-align: center;font-size: 130%;color: black; opacity: .6;"><img style="width: 20%;display: inline-block;" src="https://firebasestorage.googleapis.com/v0/b/newfyp-c1192.appspot.com/o/pie.png?alt=media&token=048b441f-5b09-401c-b1e2-ee7979f9e7a9" alt="abc">
+                &nbsp;Pie Chart</p>
             </a>
           </li>
           <div class="dropdown-divider"></div>
@@ -4442,11 +4517,12 @@ License - nucleoapp.com/license/
           <li class=" ">
             <a class="nav-link " style="color: black;" href="{% url 'line-chart' %}">
            
-              <p style="text-align: center;font-size: 130%;color: black; opacity: .6;"><img style="width: 25%;display: inline-block;" src="https://firebasestorage.googleapis.com/v0/b/newfyp-c1192.appspot.com/o/dash.png?alt=media&token=f9911ecb-fb46-48ef-a427-cd8908ff7698" alt="abc">
-                Line Graph</p>
+              <p style="text-align: center;font-size: 130%;color: black; opacity: .6;"><img style="width: 15%;display: inline-block;opacity: 0.7;" src="https://firebasestorage.googleapis.com/v0/b/newfyp-c1192.appspot.com/o/line.png?alt=media&token=af8d72f6-4f9f-40de-bbc2-1942f4a1ba7a" alt="abc">
+                &nbsp;Line Graph</p>
             </a>
           </li>
           <div class="dropdown-divider"></div>
+          
           
           <li class=" ">
             <a class="nav-link " style="color: black;" href="{% url 'add-post' %}">
@@ -4503,11 +4579,11 @@ License - nucleoapp.com/license/
     
       <nav class="navbar navbar-toggleable-md navbar-light" style="border-color:transparent;background-color: #30D5C8 ; color: #ffffff ;">
      
-        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
+        <button style="text-align: center;padding-right: 8%;padding-bottom: 6.5%;" class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span style="text-align: center;" class="navbar-toggler-icon"></span>
         </button>
-      
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <br><br>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent" >
           {% if user.is_authenticated %}
             <ul class="navbar-nav mr-auto">
               
@@ -4524,20 +4600,22 @@ License - nucleoapp.com/license/
               <li class="nav-item">
                 <a class="nav-link " style="color: black;" href="{% url 'add-category' %}">Add Category</a>
               </li>
+            
+              <input style="margin: 7px;border-radius: 10px;height: 70%;" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+              <button class="btn btn-outline-success" style="border-radius: 10px;background-color: deepskyblue;color: white;border: transparent;border-color: transparent;opacity: 5.5;" type="submit">Search</button>
+            
               {% endcomment %}
               
 
             </ul>
             <form class="d-flex" style="size: 40%;">
               
-              <input style="margin: 7px;border-radius: 10px;height: 70%;" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-              <button class="btn btn-outline-success" style="border-radius: 10px;background-color: deepskyblue;color: white;border: transparent;border-color: transparent;opacity: 5.5;" type="submit">Search</button>
-            
+              
             </form>
               &nbsp&nbsp&nbsp&nbsp
             <!-- Example single danger button -->
               <div class="btn-group">
-                <button style=" font-family: 'Brush Script MT', cursive;color: whitesmoke ;opacity: 0.7;background-color: transparent;border: transparent;font-size: 100%; margin: 2%;" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <button style="font-family: 'Brush Script MT', cursive;color: whitesmoke ;opacity: 0.7;background-color: transparent;border: transparent;font-size: 100%; margin: 5%;" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   Welcome,  {{user.first_name}} {{user.last_name}} 
                 </button>
                 <div class="dropdown-menu">
@@ -4555,22 +4633,22 @@ License - nucleoapp.com/license/
             <ul class="navbar-nav mr-auto">
                 
                 
-              {% comment %} 
-              <li class="nav-item">
-                <a class="nav-link " style="font-size: 110%;color: black;" href="{% url 'home' %}">Home</a>
+               
+              <li class="nav-item" style="width: 150px;text-align: center;">
+                <a id="a" class="nav-link button" style="margin:6.5%;border-radius: 10%;font-size: 125%;font-family: 'Brush Script MT', cursive;color:whitesmoke;;opacity: 0.7"  href="{% url 'login' %}">Welcome</a>
               </li>
-              {% endcomment %}
+              
             </ul>
-          
+
             
-                <div class="nav-item" >
-                  <a class="nav-link button" style="margin: 9%;border-radius: 10%;font-size: 110%;color:black;"  href="{% url 'login' %}">Login</a>
+                <div class="nav-item" style="width: 120px;text-align: center;">
+                  <a id="a" class="nav-link button" style="border-radius: 10%;font-size: 115%;font-family: 'Brush Script MT', cursive;color:whitesmoke;;opacity: 0.7"  href="{% url 'login' %}">Login</a>
                 </div>
                 
-                <div class="nav-item" >
-                  <a class="nav-link button" style="margin: 9%;border-radius: 10%;font-size: 110%;color:black;" href="{% url 'register' %}">Register</a>
+                <div class="nav-item" style="width: 120px;text-align: center;">
+                  <a id="a" class="nav-link button" style="border-radius: 10%;font-size: 115%;font-family: 'Brush Script MT', cursive;color:whitesmoke;;opacity: 0.7" href="{% url 'register' %}">Register</a>
                 </div>
-            
+                <br><br>
           {% endif %}
           
           
@@ -4587,16 +4665,20 @@ License - nucleoapp.com/license/
       <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+      <script>
+       document.getElementById("myDIV").style.paddingRight = "0";
+      </script>
       <div class="dropdown-divider"></div>
       <!-- End Navbar -->
-      <footer class="footer footer-black  footer-white col-md-12" style="background-color: #f7f7f7;position: fixed;bottom: 0%;">
+      <footer class="footer footer-black  footer-white col-md-12" style="z-index: 750;;background-color: #f7f7f7;position: fixed;bottom: 0%;">
         <div class="container-fluid" >
           <div class="row">
             <nav class="footer-nav">
               <ul>
-                <li><a href="#" target="_blank">Sentilysis</a></li>
-                <li><a href="#" target="_blank">Blog</a></li>
-                <li><a href="#" target="_blank">Licenses</a></li>
+                <li><a id="a2"  href="#" target="_blank">Sentilysis</a></li>
+                <li><a id="a2" href="#" target="_blank">Blog</a></li>
+                <li><a id="a2" href="#" target="_blank">Licenses</a></li>
               </ul>
             </nav>
             <div class="d-flex" style="">
@@ -4605,7 +4687,7 @@ License - nucleoapp.com/license/
                 
                 © <script>
                   document.write(new Date().getFullYear())
-                </script>, made with Love by Syed Usama Kazmi
+                </script>, made by Syed Usama Kazmi
               </span>
             </div>
           </div>
