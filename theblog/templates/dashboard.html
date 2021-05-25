@@ -12,6 +12,7 @@
         padding: 0;
         height: 100%;
         background: #7abecc !important;
+        scroll-behavior: smooth;
     }
     .user_card {
         width: 400px;
@@ -165,34 +166,49 @@
 <script type="text/javascript">
     function spinner() {
         document.getElementsByClassName("loader")[0].style.display = "block";
+        document.getElementsByName("Front")[0].style.display = "block";
         document.backgroundColor = "red";
+        
     }
 
     function facebook() {
         document.getElementsByName("Facebook")[0].style.display = "block";
+        //document.getElementsByName("Front")[0].style.display = "block";
+        
         document.getElementsByName("Youtube")[0].style.display = "none";
         document.getElementsByName("Twitter")[0].style.display = "none";
         
         var element = document.getElementById("Facebook");
         element.scrollIntoView(false);
+        //Scroll to bottom
+        var scrollingElement = (document.scrollingElement || document.body);
+        scrollingElement.scrollTop = scrollingElement.scrollHeight;
     }
 
     function youtube() {
         document.getElementsByName("Facebook")[0].style.display = "none";
         document.getElementsByName("Youtube")[0].style.display = "block";
+        //document.getElementsByName("Front")[0].style.display = "block";
         document.getElementsByName("Twitter")[0].style.display = "none";
         
         var element = document.getElementById("Youtube");
         element.scrollIntoView(false);
+        //Scroll to bottom
+        var scrollingElement = (document.scrollingElement || document.body);
+        scrollingElement.scrollTop = scrollingElement.scrollHeight;
     }
 
     function twitter() {
         document.getElementsByName("Facebook")[0].style.display = "none";
         document.getElementsByName("Youtube")[0].style.display = "none";
         document.getElementsByName("Twitter")[0].style.display = "block";
+        //document.getElementsByName("Front")[0].style.display = "block";
         
         var element = document.getElementById("Twitter");
         element.scrollIntoView(false);
+        //Scroll to bottom
+        var scrollingElement = (document.scrollingElement || document.body);
+        scrollingElement.scrollTop = scrollingElement.scrollHeight;
     }
 
 
@@ -220,10 +236,38 @@
             }
         }
         }
+        document.getElementsByName("Facebook")[0].style.display = "block";
     }
   </script>
 
 <div class="container" style="margin-bottom: 10%;"> 
+    <script>
+        window.onload= function()
+        {
+            if(window.location.href.includes("facebook"))
+            {
+            
+             document.getElementsByName("Facebook")[0].style.display = "block";
+            }
+            
+            if(window.location.href.includes("youtube"))
+            {
+            
+             document.getElementsByName("Youtube")[0].style.display = "block";
+            }
+
+            if(window.location.href.includes("twitter"))
+            {
+            
+             document.getElementsByName("Twitter")[0].style.display = "block";
+            }
+            var scrollingElement = (document.scrollingElement || document.body);
+            scrollingElement.scrollTop = scrollingElement.scrollHeight;
+           
+        }
+        
+    </script>
+    
     <div class="card" style="border-radius: 20px;margin-left: 5%;margin-right: 5%; padding-top: 2%;">
         
         <!--div id="myProgress" name="myProgress" style="position: fixed;top: 10%;right:45%;z-index: 800;display: none;">
@@ -251,20 +295,21 @@
         </div>
         
     <br>
-    <h1 class="text-center">User Dashboard</h1>
+    <h1>{{temp8}}</h1>
+    <h1 class="text-center" style="font-family: 'Brush Script MT', cursive;">User Dashboard</h1>
     <br>
     <br>
             
         <div class="text-center">
-            <div id="facebook" onclick="facebook();" class="card" style="width: 200px;height: 190px;display: inline-block;border-radius: 20px;margin-left: 5%;margin-right: 5%; padding-top: 2%;">
+            <div id="facebook" onclick="facebook();" class="card" style="border: transparent;width: 200px;height: 190px;display: inline-block;border-radius: 20px;margin-left: 5%;margin-right: 5%; padding-top: 2%;">
                 <img style="border-radius: 12px;width: 200px;display: inline-block;" src="https://firebasestorage.googleapis.com/v0/b/newfyp-c1192.appspot.com/o/Facebook-logo.png?alt=media&token=0eb014e7-a7c3-4d74-a604-ee657cd34a15" alt="abc">
                     
             </div>
-            <div id="youtube" onclick="youtube();" class="card" style="width: 200px;height: 190px;display: inline-block;border-radius: 20px;margin-left: 5%;margin-right: 5%; padding-top: 2%;">
+            <div id="youtube" onclick="youtube();" class="card" style="border: transparent;width: 200px;height: 190px;display: inline-block;border-radius: 20px;margin-left: 5%;margin-right: 5%; padding-top: 2%;">
                 <img style="border-radius: 100px;width: 140px;display: inline-block;" src="https://firebasestorage.googleapis.com/v0/b/newfyp-c1192.appspot.com/o/8yucw0-youtube-logo-png.png?alt=media&token=c281bbdb-bc74-411c-80ab-41feb35351aa" alt="abc">
                 
             </div>
-            <div id="twitter" onclick="twitter();" class="card" style="width: 200px;height: 190px;display: inline-block;border-radius: 20px;margin-left: 5%;margin-right: 5%; padding-top: 2%;">
+            <div id="twitter" onclick="twitter();" class="card" style="border: transparent;width: 200px;height: 190px;display: inline-block;border-radius: 20px;margin-left: 5%;margin-right: 5%; padding-top: 2%;">
                 
                 <img style="border-radius: 120px;width: 140px;display: inline-block;" src="https://firebasestorage.googleapis.com/v0/b/newfyp-c1192.appspot.com/o/124021.png?alt=media&token=777eef73-ee40-4373-ba1e-a934073f4d81" alt="abc">
                 
@@ -326,8 +371,14 @@
                         
                         {% endif %}
                        <br>
+                       
                     </div>
-                    
+                    {% if temp %}
+                    <form method="POST" action="{% url 'startanalysis' %}">
+                        {% csrf_token %}
+                        <input onclick="spinner();move(5)" class="btn login_btn" type="submit" value="Start Analysis" style="text-decoration: none" >
+                    </form>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -379,6 +430,8 @@
                         
                         {% endif %}
                        <br>
+
+                       
                     </div>
                     
                 </div>
@@ -443,9 +496,9 @@
 
 </div>
 {% else %}
-<div class="container">
-    Access Denied Login first
-</div>
+<script>
+location.href = window.location.href + 'members/login/';
+</script>
 {% endif %}
 
 {% endblock %}

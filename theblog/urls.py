@@ -17,9 +17,14 @@ urlpatterns = [
     path('category/<str:cats>/', CategoryView, name="category"),
 
     path('dashboard/', views.dashboard, name="dashboard"),
+    path('addsent/', views.addsent, name="addsent"),
+
     path('pie-chart/', views.pie_chart, name='pie-chart'),
     path('population-chart/', views.population_chart, name='population-chart'),
     path('line-chart/', views.line_chart, name='line-chart'),
+    
+    
+    path('startanalysis/', views.startanalysis, name="startanalysis"),
     
     path('facebook/', views.facebook, name="facebook"),
     path('youtube/', views.youtube, name="youtube"),

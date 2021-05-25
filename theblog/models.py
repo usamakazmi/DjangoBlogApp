@@ -4,6 +4,14 @@ from django.urls import reverse
 from datetime import datetime, date
 # Create your models here.
 
+class SentData(models.Model):
+    comment = models.TextField()
+    date = models.CharField(max_length = 255)
+    sentiment = models.CharField(max_length = 255)
+    ownerData = models.CharField(max_length = 255)
+    owner = models.ForeignKey(User, on_delete = models.CASCADE)
+    
+    
 class Country(models.Model):
     name = models.CharField(max_length=30)
 

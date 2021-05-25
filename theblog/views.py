@@ -3,14 +3,99 @@ from django.http import HttpResponse
 from django.http import JsonResponse
 from django.db.models import Sum
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from .models import Post, Category, City, Country
+from .models import Post, Category, City, Country, SentData
 from .forms import PostForm, EditForm
 from django.urls import reverse_lazy
+from django.db.models import Count
+
+import pandas as pd
+
+from theblog.preprocessing import * 
+from theblog.model import *
+from collections import Counter
+import matplotlib.pyplot as plt
+
 # detail is 1, list is all
 # Create your views here.
 
-#def home(request):
-#    return render(request,'home.html', {})
+def startanalysis(request):
+    
+   
+    # import pandas as pd
+
+    # Filename = filename.csv
+
+    # importing data
+    print('Importing File')
+    df = pd.read_excel('Facebook.xls')
+    df = df.astype(str)
+    print('File Imported')
+
+    # Preprcoessing
+    print('\nPreprocessing Started')
+    df_2 = proceprocessData(df)
+    df_2['text_lemmatized'] = df_2['Content'].apply(lambda text: lemmatize_words(text))
+    print('Preprocessing End')
+
+    filter_df = df_2[['text_lemmatized']]
+    filter_df = filter_df.astype(str)
+    filter_df.drop_duplicates(keep='first', inplace=True)
+
+
+    # prediction
+    Prediction = prediction(filter_df)
+    filter_df['Sentiment'] = Prediction
+    filter_df.to_excel('label.xls', index=False)
+
+
+    import xlrd
+    from itertools import islice
+    # Give the location of the file
+    loc = ("label.xls")
+    
+    # To open Workbook
+    wb = xlrd.open_workbook(loc)
+    sheet = wb.sheet_by_index(0)
+    
+   
+    #temp5 = request.user
+    
+    # Comment = SentData.objects.create(comment='temp5')
+    # Date =  SentData.objects.create(date='temp5')
+    # Sentiment = SentData.objects.create(sentiment='temp5')
+    # OwnerData = SentData.objects.create(ownerData='temp5')
+    # Owner = SentData.objects.create(owner=request.user)
+    from datetime import datetime
+
+    # datetime object containing current date and time
+    now = datetime.now()
+    
+    #print("now =", now)
+
+    # dd/mm/YY H:M:S
+    dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
+    #print("date and time =", dt_string)
+
+    sentdata = {}
+    df = pd.read_excel('label.xls')  
+    #for i in range(0,2):
+    i = 1
+    # while(sheet.cell_value(i, 0) != None):
+    
+    for i in range(0 ,df['text_lemmatized'].size):
+        sentdata[i] = SentData()
+        sentdata[i].comment = df['text_lemmatized'][i]
+        sentdata[i].date = dt_string
+        sentdata[i].sentiment = df['Sentiment'][i]
+        sentdata[i].ownerData = request.user.email + dt_string
+        sentdata[i].owner = request.user
+        sentdata[i].save()
+    #    i = i + 1
+    
+
+    return render(request,'dashboard.html', {'temp8' : df['text_lemmatized'].size})
+
+
 def youtube(request):
     from selenium import webdriver
     from selenium.webdriver.common.action_chains import ActionChains
@@ -78,8 +163,8 @@ def youtube(request):
     sheet1.write(0, 7, "Name Of Commenter")
     sheet1.write(0, 8, "Comment Likes")
     sheet1.write(0, 9, "Comment Replies")
-    sheet1.write(0, 10, "Comment Text")
-    kb.save('Youtube.csv')
+    sheet1.write(0, 10, "Content")
+    kb.save('Youtube.xls')
     mi = 1
     mi2 = 1
     #login = driver.find_element_by_id("yt-simple-endpoint style-scope ytd-button-renderer")
@@ -195,13 +280,13 @@ def youtube(request):
     for span in search_input:
         #    print(span.text)
             sheet1.write(mi, 10, span.text)
-            kb.save('Youtube.csv')
+            kb.save('Youtube.xls')
             mi = mi + 1
     
     for span2 in commentdate:
         #    print(span.text)
             sheet1.write(mi2, 1, span2.text)
-            kb.save('Youtube.csv')
+            kb.save('Youtube.xls')
             mi2 = mi2 + 1
             print(mi2)
 
@@ -236,9 +321,6 @@ def youtube(request):
 
     return render(request,'dashboard.html', {'temp2': temp2, 'time2': tme2, 'postLink2': postLink2, 'speed2': float(temp2/tme2)})
     
-
-
-
 def facebook(request):
     from selenium import webdriver
     from selenium.webdriver.common.action_chains import ActionChains
@@ -266,6 +348,13 @@ def facebook(request):
     #print(userAgent)
     #headers = {'User-Agent': userAgent}
     opts = selenium.webdriver.ChromeOptions()
+    
+    prefs = {
+        "translate_whitelists": {"ur":"en"},
+        "translate":{"enabled":"true"}
+    }
+    opts.add_experimental_option("prefs", prefs)
+    opts.add_argument("--lang=en")
     opts.add_argument("user-agent=Mozilla/5.0 (Windows Phone 10.0; Android 4.2.1; Microsoft; Lumia 640 XL LTE) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Mobile Safari/537.36 Edge/12.10166")
     #opts.add_argument('headless')
     driver = selenium.webdriver.Chrome(executable_path=r'C:\chromedriver.exe', options=opts)
@@ -297,11 +386,15 @@ def facebook(request):
     sheet1.write(0, 7, "Name Of Commenter")
     sheet1.write(0, 8, "Comment Likes")
     sheet1.write(0, 9, "Comment Replies")
-    sheet1.write(0, 10, "Comment Text")
+    sheet1.write(0, 10, "Content")
     kb.save('Facebook.xls')
     mi = 1
     mi2 = 1
-    login = driver.find_element_by_xpath("//span[text()='Log In']")
+    try:
+        login = driver.find_element_by_xpath("//span[text()='Log In']")
+    except:
+             login = driver.find_element_by_xpath("//a[text()='صفحہ اول پر جائیں']")
+   
     ActionChains(driver).move_to_element(login).click().perform()
     time.sleep(3)
     driver.implicitly_wait(10)
@@ -315,7 +408,7 @@ def facebook(request):
     password.send_keys("B@efbcwfpiimrzfv1")
 
     driver.find_element_by_name("login").click()
-
+    driver.get(postLink)
     #SEARCH_INPUT2 = (By.XPATH, "//div[@class='kvgmc6g5 cxmmr5t8 oygrvhab hcukyx3x c1et5uql']")
 
     # all_spans = driver.find_elements_by_xpath("//div[@class='ecm0bbzt e5nlhep0 a8c37x1j']/span[@class='d2edcug0 hpfvmrgz qv66sw1b c1et5uql rrkovp55 a8c37x1j keod5gw0 nxhoafnm aigsh9s9 d3f4x2em fe6kdd0r mau55g9w c8b282yb iv3no6db jq4qci2q a3bd9o3v knj5qynh oo9gr5id']/div[@class='kvgmc6g5 cxmmr5t8 oygrvhab hcukyx3x c1et5uql']")
@@ -421,8 +514,115 @@ def facebook(request):
     #return render(request,'dashboard.html', {'temp': temp, 'time': tme })
 
 
-
 def line_chart(request):
+
+    labels = []
+    data = []
+
+    #queryset = SentData.objects.order_by('-sentiment')[:5]
+
+    queryset = SentData.objects.filter(sentiment="What about those who drive")
+    count = SentData.objects.values('sentiment').distinct().count()
+    p = SentData.objects.values('sentiment').distinct().filter(owner=request.user)
+    q = 0
+
+    #q = SentData.objects.values('optional_first_name').annotate(c=Count('optional_first_name')).order_by('-c')
+    cnt = 0
+    for i in p:
+        labels.append(i['sentiment'])
+        q = SentData.objects.filter(sentiment=i['sentiment']).filter(owner=request.user).count()
+        data.append(q)
+   
+
+    return render(request, 'line_chart.html', {
+        'labels': labels,
+        'data': data,
+        'count' : count,
+        'p' : len(p),
+        'q' : q,
+        'object_list': 2
+      
+    })
+
+def population_chart(request):
+    labels = []
+    data = []
+
+    #queryset = SentData.objects.order_by('-sentiment')[:5]
+
+    queryset = SentData.objects.filter(sentiment="What about those who drive")
+    count = SentData.objects.values('sentiment').distinct().count()
+    p = SentData.objects.values('sentiment').distinct().filter(owner=request.user)
+    q = 0
+
+    #q = SentData.objects.values('optional_first_name').annotate(c=Count('optional_first_name')).order_by('-c')
+    cnt = 0
+    for i in p:
+        labels.append(i['sentiment'])
+        q = SentData.objects.filter(sentiment=i['sentiment']).filter(owner=request.user).count()
+        data.append(q)
+   
+
+    return render(request, 'population_chart.html', {
+        'labels': labels,
+        'data': data,
+        'count' : count,
+        'p' : len(p),
+        'q' : q,
+        'object_list': 2
+      
+    })
+
+def pie_chart(request):
+    labels = []
+    data = []
+
+    labels2 = []
+    data2 = []
+
+    #queryset = SentData.objects.order_by('-sentiment')[:5]
+
+    queryset = SentData.objects.filter(sentiment="What about those who drive")
+    count = SentData.objects.values('sentiment').distinct().count()
+    p = SentData.objects.values('sentiment').distinct().filter(owner=request.user)
+    
+    count2 = SentData.objects.values('date').distinct().count()
+    p2 = SentData.objects.values('date').distinct().filter(owner=request.user)
+    
+
+    #q = SentData.objects.values('optional_first_name').annotate(c=Count('optional_first_name')).order_by('-c')
+    
+    for i in p:
+        labels.append(i['sentiment'])
+        q = SentData.objects.filter(sentiment=i['sentiment']).filter(owner=request.user).count()
+        data.append(q)
+
+    for i2 in p2:
+        labels2.append(i2['date'])
+        q2 = SentData.objects.filter(date=i2['date']).filter(owner=request.user).count()
+        data2.append(q2)
+
+    d = dict()
+    d['set1'] = labels
+    d['set2'] = labels
+    # for city in queryset:
+    #     #labels.append(city.sentiment) 
+    #     data.append(count[city])
+
+    return render(request, 'pie_chart.html', {
+        'labels': labels,
+        'data': data,
+        'count' : count,
+        'p' : len(p),
+        'q' : q,
+        'object_list': 2,
+        'd' : d,
+        'labels2': labels2,
+        'data2': data2,
+
+    })
+
+#def line_chart(request):
     labels = []
     data = []
 
@@ -440,7 +640,7 @@ def line_chart(request):
         'data': data,
     })
 
-def population_chart(request):
+#def population_chart(request):
     labels = []
     data = []
 
@@ -457,9 +657,8 @@ def population_chart(request):
         'labels': labels,
         'data': data,
     })
-
-
-def pie_chart(request):
+ 
+#def pie_chart(request):
     labels = []
     data = []
 
@@ -471,7 +670,7 @@ def pie_chart(request):
     return render(request, 'pie_chart.html', {
         'labels': labels,
         'data': data,
-    })
+    })   
 
 def dashboard(request):
     return render(request,'dashboard.html', {})
@@ -479,6 +678,41 @@ def dashboard(request):
 def home(request):
     return render(request,'dashboard.html', {})
 
+def addsent(request):
+        
+    import xlrd
+    from itertools import islice
+    # Give the location of the file
+    loc = ("Facebook.xls")
+    
+    # To open Workbook
+    wb = xlrd.open_workbook(loc)
+    sheet = wb.sheet_by_index(0)
+    
+    # For row 0 and column 0
+    #print(sheet.cell_value(1, 10))
+    temp5 = sheet.cell_value(3, 10)
+    #temp5 = request.user
+    
+    # Comment = SentData.objects.create(comment='temp5')
+    # Date =  SentData.objects.create(date='temp5')
+    # Sentiment = SentData.objects.create(sentiment='temp5')
+    # OwnerData = SentData.objects.create(ownerData='temp5')
+    # Owner = SentData.objects.create(owner=request.user)
+    sentdata = {}
+    for i in range(0,2):
+        sentdata[i] = SentData()
+        sentdata[i].comment = sheet.cell_value(5, 10)
+        sentdata[i].date = sheet.cell_value(5, 10)
+        sentdata[i].sentiment = sheet.cell_value(5, 10)
+        sentdata[i].ownerData = request.user.email
+        sentdata[i].owner = request.user
+        
+        sentdata[i].save()
+        
+ 
+    
+    return render(request,'dashboard.html', {'temp5':temp5})
 
 # class HomeView(ListView):
 #     model = Post
