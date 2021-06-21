@@ -25,7 +25,7 @@ SECRET_KEY = 'p1mb$(l3i+b0&q5aku0c+@4@=h20&7p73tga)*&+-u+6k!ya8y'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['sentilysisproject.herokuapp.com']
 
 
 # Application definition
