@@ -4,6 +4,15 @@
 {% block title %}Register{% endblock %}  
 {% block content %}
 
+{% if user.is_authenticated %}
+<script>
+	//location.href = window.location.href - 'members/register/' + 'dashboard/';
+	str = window.location.href;
+	location.href = str.replace("members/register/", "dashboard/");
+	//alert(str.replace("members/register/", "dashboard/"));
+</script>
+{% endif %}
+
 <!DOCTYPE html>
 <html>
     

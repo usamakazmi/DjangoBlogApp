@@ -7,7 +7,8 @@ from .models import Post, Category, City, Country, SentData
 from .forms import PostForm, EditForm
 from django.urls import reverse_lazy
 from django.db.models import Count
-
+import os
+    
 import pandas as pd
 
 from theblog.preprocessing import * 
@@ -26,8 +27,19 @@ def startanalysis(request):
     # Filename = filename.csv
 
     # importing data
-    print('Importing File')
-    df = pd.read_excel('Facebook.xls')
+    try:
+        df = pd.read_excel('Facebook.xls')
+    except:
+        try:
+            df = pd.read_excel('Twitter.xls')
+        except:
+            try:
+                df = pd.read_excel('Youtube.xls')
+            except:
+                print(".")
+    
+    
+        
     df = df.astype(str)
     print('File Imported')
 
@@ -91,6 +103,16 @@ def startanalysis(request):
         sentdata[i].owner = request.user
         sentdata[i].save()
     #    i = i + 1
+    try:
+        os.remove("Facebook.xls")
+    except:
+        try:
+            os.remove("Twitter.xls")
+        except:
+            try:
+                os.remove("Youtube.xls")
+            except:
+                print(".")
     
 
     return render(request,'dashboard.html', {'temp8' : df['text_lemmatized'].size})
@@ -132,7 +154,9 @@ def youtube(request):
     opts.add_argument('--ignore-certificate-errors')
     opts.add_argument('--allow-running-insecure-content')
     opts.add_argument("--mute-audio")
-    driver = selenium.webdriver.Chrome(executable_path=r'C:\chromedriver.exe', options=opts)
+    #driver = selenium.webdriver.Chrome(executable_path=r'C:\chromedriver.exe', options=opts)
+    driver = selenium.webdriver.Chrome('chromedriver.exe', options=opts)
+    
     #driver = selenium.webdriver.Chrome(executable_path=r'C:\chromedriver.exe')
 
     #driver = webdriver.Firefox(executable_path=r'C:\geckodriver.exe')
@@ -357,7 +381,10 @@ def facebook(request):
     opts.add_argument("--lang=en")
     opts.add_argument("user-agent=Mozilla/5.0 (Windows Phone 10.0; Android 4.2.1; Microsoft; Lumia 640 XL LTE) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Mobile Safari/537.36 Edge/12.10166")
     #opts.add_argument('headless')
-    driver = selenium.webdriver.Chrome(executable_path=r'C:\chromedriver.exe', options=opts)
+    
+    #driver = selenium.webdriver.Chrome(executable_path=r'C:\chromedriver.exe', options=opts)
+
+    driver = selenium.webdriver.Chrome('chromedriver.exe', options=opts)
     #driver = webdriver.Firefox(executable_path=r'C:\geckodriver.exe')
     #driver = selenium.webdriver.Chrome(executable_path=r'C:\chromedriver.exe')
     
@@ -514,6 +541,120 @@ def facebook(request):
     #return render(request,'dashboard.html', {'temp': temp, 'time': tme })
 
 
+def twitter(request):
+    from selenium import webdriver
+    from selenium.webdriver.common.action_chains import ActionChains
+    from selenium.webdriver.chrome.options import Options
+    from xlwt import Workbook
+    from xlwt import XFStyle,Borders, Pattern, Font, easyxf
+    from selenium.webdriver.support.ui import WebDriverWait
+    from selenium.common.exceptions import TimeoutException
+    from xlrd import open_workbook
+    import time
+    from datetime import date
+    import json
+    import selenium.webdriver
+    from selenium.common.exceptions import NoSuchElementException
+    from selenium.common.exceptions import StaleElementReferenceException
+    from multiprocessing import Process
+    import sys
+    from selenium.webdriver.support.ui import WebDriverWait
+    from selenium.webdriver.common.by import By
+    from selenium.webdriver.support import expected_conditions as EC
+    from selenium.webdriver.common.keys import Keys
+
+    start_time = time.time()
+    postLink3 = request.POST.get("postlink3")
+    date_since = request.POST.get("postCount3")
+
+    postCount3 = request.POST.get("postCount4")
+    
+    
+    kb = Workbook()
+    # add_sheet is used to create sheet.
+    sheet1 = kb.add_sheet('Sheet 1', cell_overwrite_ok=True)
+    print(" WORKSHEET CREATED SUCCESSFULLY!")
+    print(" ")
+    # INITIALIZING THE COLOUMN NAMES NOW
+    sheet1.write(0, 0, "Post No")
+    sheet1.write(0, 1, "Date Of Post")
+    sheet1.write(0, 2, "Text Of Post")
+    sheet1.write(0, 3, "Likes")
+    sheet1.write(0, 4, "Comments")
+    sheet1.write(0, 5, "Shares")
+    sheet1.write(0, 6, "Comment No")
+    sheet1.write(0, 7, "Name Of Commenter")
+    sheet1.write(0, 8, "Comment Likes")
+    sheet1.write(0, 9, "Comment Replies")
+    sheet1.write(0, 10, "Content")
+    kb.save('Twitter.xls')
+    mi = 1
+    mi2 = 1
+    #login = driver.find_element_by_id("yt-simple-endpoint style-scope ytd-button-renderer")
+
+    #Twitter Api
+    APIkey = "PMCVuv8IoBYZsfE5NC9iTAVUq"
+
+    APIsecretkey = "5LQ00BLIowonJNI4O3iNjQDsO73zTU4RA9jU0P48qYHtKXQ9Sr"
+
+    Bearertoken = "AAAAAAAAAAAAAAAAAAAAAOq1NQEAAAAA9D9%2Ff8KaNepiMlfE391KUWnOx5E%3Df3A5vL1P4b5oQCujLuQej6XGfLcdKI8PayRp3BNCIvX3YYdlzn"
+
+    APPID = "20297194"
+
+    Accesstoken = "1178293129734217728-BjQJpZj1hGcWeXMxT4jukac3zsepaA"
+
+    Accesstokensecret = "7KvGcqa1rRIu8yXiBK8wyETyjWq1F2HPIU0gS70Ywq245"
+
+
+    consumer_key= 'PMCVuv8IoBYZsfE5NC9iTAVUq'
+    consumer_secret= '5LQ00BLIowonJNI4O3iNjQDsO73zTU4RA9jU0P48qYHtKXQ9Sr'
+    access_token= '1178293129734217728-BjQJpZj1hGcWeXMxT4jukac3zsepaA'
+    access_token_secret= '7KvGcqa1rRIu8yXiBK8wyETyjWq1F2HPIU0gS70Ywq245'
+    #twurl -X GET "/labs/2/tweets/1138505981460193280?expansions=attachments.media_keys&tweet.fields=created_at,author_id,lang,source,public_metrics,context_annotations,entities"
+
+    import os
+    import tweepy as tw
+    import pandas as pd
+    import csv
+
+
+    auth = tw.OAuthHandler(consumer_key, consumer_secret)
+    auth.set_access_token(access_token, access_token_secret)
+    api = tw.API(auth, wait_on_rate_limit=True)
+
+    # Define the search term and the date_since date as variables
+    search_words = postLink3
+    
+    tweets = tw.Cursor(api.search,
+                q=search_words,
+                lang="en",
+                since=date_since).items(postCount3)
+
+    cnt = 1
+    temp = 0
+    for tweet in tweets:
+        #print("[---" +tweet.text + "---]\n")
+        sheet1.write(mi, 10, tweet.text)
+        date = (str(tweet.author.created_at).split(' '))
+        sheet1.write(mi2, 1, date[0])
+        kb.save('Twitter.xls')
+        mi = mi + 1
+        mi2 = mi2 + 1
+        temp = temp + 1
+            
+        #print(tweet.created_at)
+        #print('\n')
+        
+    
+    #[tweet.text for tweet in tweets]
+
+
+    tme3 = time.time() - start_time
+    temp3 = temp
+
+    return render(request,'dashboard.html', {'temp3': temp3, 'time3': tme3, 'postLink3': postLink3, 'speed3': float(temp3/tme3)})
+
+
 def line_chart(request):
 
     labels = []
@@ -584,7 +725,7 @@ def pie_chart(request):
 
     queryset = SentData.objects.filter(sentiment="What about those who drive")
     count = SentData.objects.values('sentiment').distinct().count()
-    p = SentData.objects.values('sentiment').distinct().filter(owner=request.user)
+    p = SentData.objects.values('sentiment').distinct().filter(owner=request.user, date="21/06/2021 13:04:36")
     
     count2 = SentData.objects.values('date').distinct().count()
     p2 = SentData.objects.values('date').distinct().filter(owner=request.user)
@@ -594,7 +735,7 @@ def pie_chart(request):
     
     for i in p:
         labels.append(i['sentiment'])
-        q = SentData.objects.filter(sentiment=i['sentiment']).filter(owner=request.user).count()
+        q = SentData.objects.filter(sentiment=i['sentiment']).filter(owner=request.user, date="21/06/2021 13:04:36").count()
         data.append(q)
 
     for i2 in p2:
@@ -673,10 +814,12 @@ def pie_chart(request):
     })   
 
 def dashboard(request):
-    return render(request,'dashboard.html', {})
+    dates = SentData.objects.values('date').distinct().filter(owner=request.user)
+    return render(request,'dashboard.html', {'dates':dates})
 
 def home(request):
-    return render(request,'dashboard.html', {})
+    dates = SentData.objects.values('date').distinct().filter(owner=request.user)
+    return render(request,'dashboard.html', {'dates':dates})
 
 def addsent(request):
         

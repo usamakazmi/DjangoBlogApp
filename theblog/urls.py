@@ -28,6 +28,8 @@ urlpatterns = [
     
     path('facebook/', views.facebook, name="facebook"),
     path('youtube/', views.youtube, name="youtube"),
+    path('twitter/', views.twitter, name="twitter"),
+    
     
     #path('population-chart/', views.population_chart, name='population-chart'),
 ]

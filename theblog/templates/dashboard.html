@@ -295,8 +295,16 @@
         </div>
         
     <br>
-    <h1>{{temp8}}</h1>
+   
     <h1 class="text-center" style="font-family: 'Brush Script MT', cursive;">User Dashboard</h1>
+    <h1 style="color: black;">
+        {% for date in dates %}
+            {{date.date}}
+            <br>
+        {% endfor %}
+       
+    </h1>
+    
     <br>
     <br>
             
@@ -433,6 +441,12 @@
 
                        
                     </div>
+                    {% if temp2 %}
+                    <form method="POST" action="{% url 'startanalysis' %}">
+                        {% csrf_token %}
+                        <input onclick="spinner();move(5)" class="btn login_btn" type="submit" value="Start Analysis" style="text-decoration: none" >
+                    </form>
+                    {% endif %}
                     
                 </div>
             </div>
@@ -450,11 +464,16 @@
                         <h3 id="form-title">Twitter</h3>
                     </div>
                     <div class="d-flex justify-content-center form_container">
-                        <form method="POST" action="{% url 'facebook' %}">
+                        <form method="POST" action="{% url 'twitter' %}">
                             {% csrf_token %}
                                 
-                                <input id="output" style="width: 350px;" type="text" name="postlink" placeholder="Enter Hashtag..." class="form-control" autofocus required>
-                                <a href="{% url 'facebook' %}" style="text-decoration: none">
+                                <input id="output3" style="width: 350px;" type="text" name="postlink3" placeholder="Enter Hashtag..." class="form-control" autofocus required>
+                                <br>
+                                <input id="count3" style="width: 350px;" type="text" name="postCount3" placeholder="Enter Start Date(yyyy-mm-dd)..." class="form-control" required>
+                                <br>
+                                <input id="count4" style="width: 350px;" type="text" name="postCount4" placeholder="Enter Tweet Count..." class="form-control" required>
+                               
+                                <a href="{% url 'twitter' %}" style="text-decoration: none">
                                 <div class="d-flex justify-content-center mt-3 login_container">
                                     <input onclick="spinner()" class="btn login_btn" type="submit" value="Fetch" style="text-decoration: none" >
                                     <br>
@@ -468,14 +487,14 @@
                     <br>
                     <div class="card" style="border-radius: 7px;padding-left: 5%;padding-right: 5%; padding-top: 2%;">
                         <br>
-                        {% if temp %}
-                        <h5>Tag: </h5>{{postLink}}
+                        {% if temp3 %}
+                        <h5>Tag: </h5>{{postLink3}}
                         <br><br>
-                        <h5>Tweets Extracted: Less than </h5>{{temp}}
+                        <h5>Tweets Extracted: Less than </h5>{{temp3}}
                         <br><br>
-                        <h5>Speed: </h5>{{speed}}<h5> Tweets per second</h5>
+                        <h5>Speed: </h5>{{speed3}}<h5> Tweets per second</h5>
                         <br>
-                        <h5>Total Time: </h5>{{time}}
+                        <h5>Total Time: </h5>{{time3}}
                         <br>
                         {% else %}
                         <h4 id="Twitter" class="text-center" >Nothing to show</h4>
@@ -483,6 +502,12 @@
                         {% endif %}
                        <br>
                     </div>
+                    {% if temp3 %}
+                    <form method="POST" action="{% url 'startanalysis' %}">
+                        {% csrf_token %}
+                        <input onclick="spinner();move(5)" class="btn login_btn" type="submit" value="Start Analysis" style="text-decoration: none" >
+                    </form>
+                    {% endif %}
                     
                 </div>
             </div>

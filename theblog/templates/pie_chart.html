@@ -67,7 +67,7 @@
                     type: 'pie',
                     data: {
                       datasets: [{
-                        data: {{ data2|safe }},
+                        data: {{ data|safe }},
                         backgroundColor: [
                         '#DAF7A6','#FFC300','#FF5733','#C70039','#900C3F','#581845',
                         'dodgerblue', 'deepskyblue', '#9AFEFF', '#7FFFD4','#00FFFF',
@@ -79,7 +79,7 @@
                         ],
                         label: 'Date'
                       }],
-                      labels: {{ labels2|safe }}
+                      labels: {{ labels|safe }}
                     },
                     options: {
                       responsive: true
