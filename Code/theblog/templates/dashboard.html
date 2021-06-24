@@ -163,6 +163,11 @@
     }
     </style>
 
+<style>
+    #list li:nth-child(odd){background: whitesmoke;font-size: large; padding: 2%;}
+    #list li:nth-child(even){background: #FFF;font-size: large; padding: 2%;}
+    
+</style>
 <script type="text/javascript">
     function spinner() {
         document.getElementsByClassName("loader")[0].style.display = "block";
@@ -172,8 +177,16 @@
     }
 
     function facebook() {
-        document.getElementsByName("Facebook")[0].style.display = "block";
-        //document.getElementsByName("Front")[0].style.display = "block";
+        if(document.getElementsByName("Facebook")[0].style.display == "block")
+        {
+            document.getElementsByName("Facebook")[0].style.display = "none";
+        
+        }
+        else
+        {
+            document.getElementsByName("Facebook")[0].style.display = "block";
+        
+        }
         
         document.getElementsByName("Youtube")[0].style.display = "none";
         document.getElementsByName("Twitter")[0].style.display = "none";
@@ -186,8 +199,17 @@
     }
 
     function youtube() {
+        if(document.getElementsByName("Youtube")[0].style.display == "block")
+        {
+            document.getElementsByName("Youtube")[0].style.display = "none";
+        
+        }
+        else
+        {
+            document.getElementsByName("Youtube")[0].style.display = "block";
+        
+        }
         document.getElementsByName("Facebook")[0].style.display = "none";
-        document.getElementsByName("Youtube")[0].style.display = "block";
         //document.getElementsByName("Front")[0].style.display = "block";
         document.getElementsByName("Twitter")[0].style.display = "none";
         
@@ -199,9 +221,18 @@
     }
 
     function twitter() {
+        if(document.getElementsByName("Twitter")[0].style.display == "block")
+        {
+            document.getElementsByName("Twitter")[0].style.display = "none";
+        
+        }
+        else
+        {
+            document.getElementsByName("Twitter")[0].style.display = "block";
+        
+        }
         document.getElementsByName("Facebook")[0].style.display = "none";
         document.getElementsByName("Youtube")[0].style.display = "none";
-        document.getElementsByName("Twitter")[0].style.display = "block";
         //document.getElementsByName("Front")[0].style.display = "block";
         
         var element = document.getElementById("Twitter");
@@ -246,7 +277,7 @@
         {
             if(window.location.href.includes("facebook"))
             {
-            
+                
              document.getElementsByName("Facebook")[0].style.display = "block";
             }
             
@@ -267,8 +298,91 @@
         }
         
     </script>
-    
     <div class="card" style="border-radius: 20px;margin-left: 5%;margin-right: 5%; padding-top: 2%;">
+        <h1 class="text-center" style="font-family: 'Brush Script MT', cursive;">User Dashboard</h1>
+        <br>
+    </div>
+    
+    
+    <div class="row" style="position: relative;margin-left: 3.5%;margin-right: 0.5%;">
+      
+        <div class="card col-sm-7 px-5 py-3 mx-3" style="border-radius: 20px;height: fit-content;" >
+            <div class="text-center">
+                <form method="post" enctype="multipart/form-data" action="{% url 'single' %}">
+                    {% csrf_token %}
+                   
+                    <h5 style="font-family: 'Brush Script MT', cursive;"><strong>The Sentiment is... </strong>{{sent}}</h5>
+                  
+                    <input placeholder="Enter a sentence for analysis..." type="text" name="single" style="background-color: #f4f3ef;border: none;border-radius: 25px;width: 60%;height: 40px;" required autofocus>
+                    <button class="btn login_btn" style="width: 21.5%;border-radius: 25px" type="submit">Analyze</button> 
+                </form>
+            </div>
+
+         </div>
+         
+
+          
+        <div class="card col-sm-4" style="border-radius: 20px; width: 100px; height: 650px;">
+            <div class="text-center" style="padding: 5%;">
+                <br>
+                <h3 style="font-family: 'Brush Script MT', cursive;">Trending Now</h3><hr>
+                <h5 style="color: black;">
+                    {% for a in all %}
+                        {{a}}
+                        <br>
+                        <br>
+                        
+                        
+                    {% endfor %}
+                
+                </h5>
+            </div>
+        </div>
+
+        <div class="card col-sm-7 px-5 py-3 mx-3" style="border-radius: 20px;position: absolute; top: 21%;">
+            <div class="text-center">
+                <form method="post" enctype="multipart/form-data" action="{% url 'uploadfile' %}">
+                    {% csrf_token %}
+                    <input type="file" name="myfile" required>
+                    <button class="btn login_btn" style="width: 21.5%;border-radius: 25px" type="submit">Upload</button>
+                </form>
+            </div>
+        </div>
+        <div class="card col-sm-7 px-5 py-3 mx-3" style="border-radius: 20px;position: absolute; top: 245px;height: 400px;">
+            <br>
+            <h3 class="text-center" style="font-family: 'Brush Script MT', cursive;">My Work History</h3><hr>
+            <div style="overflow-y: scroll">
+                <h5 style="color: black;">
+                    <ol id="list">
+                        
+                    
+                    {% for date in dates %}
+                        <li id="list">
+                        {{date.date}}
+                        </li>
+                    {% endfor %}
+
+                    {% for date in dates %}
+                    <li id="list">
+                    {{date.date}}
+                    </li>
+                     {% endfor %}
+
+                     {% for date in dates %}
+                     <li id="list">
+                     {{date.date}}
+                     </li>
+                      {% endfor %}
+                     </ol>
+                </h5>
+            </div>
+        </div>
+
+    </div>
+   
+   
+    
+    <div class="card" style="background-color: ;border-radius: 20px;margin-left: 5%;margin-right: 5%; padding-top: 2%; margin-top: 1%;">
         
         <!--div id="myProgress" name="myProgress" style="position: fixed;top: 10%;right:45%;z-index: 800;display: none;">
                 
@@ -295,29 +409,25 @@
         </div>
         
     <br>
-   
-    <h1 class="text-center" style="font-family: 'Brush Script MT', cursive;">User Dashboard</h1>
-    <h1 style="color: black;">
-        {% for date in dates %}
-            {{date.date}}
-            <br>
-        {% endfor %}
-       
-    </h1>
+    
+    
+    
+    
+    
     
     <br>
     <br>
             
         <div class="text-center">
-            <div id="facebook" onclick="facebook();" class="card" style="border: transparent;width: 200px;height: 190px;display: inline-block;border-radius: 20px;margin-left: 5%;margin-right: 5%; padding-top: 2%;">
+            <div id="facebook" onclick="facebook();" class="card" style="background-color: whitesmoke;border: transparent;width: 200px;height: 190px;display: inline-block;border-radius: 20px;margin-left: 5%;margin-right: 5%; padding-top: 2%;">
                 <img style="border-radius: 12px;width: 200px;display: inline-block;" src="https://firebasestorage.googleapis.com/v0/b/newfyp-c1192.appspot.com/o/Facebook-logo.png?alt=media&token=0eb014e7-a7c3-4d74-a604-ee657cd34a15" alt="abc">
                     
             </div>
-            <div id="youtube" onclick="youtube();" class="card" style="border: transparent;width: 200px;height: 190px;display: inline-block;border-radius: 20px;margin-left: 5%;margin-right: 5%; padding-top: 2%;">
+            <div id="youtube" onclick="youtube();" class="card" style="background-color: whitesmoke;border: transparent;width: 200px;height: 190px;display: inline-block;border-radius: 20px;margin-left: 5%;margin-right: 5%; padding-top: 2%;">
                 <img style="border-radius: 100px;width: 140px;display: inline-block;" src="https://firebasestorage.googleapis.com/v0/b/newfyp-c1192.appspot.com/o/8yucw0-youtube-logo-png.png?alt=media&token=c281bbdb-bc74-411c-80ab-41feb35351aa" alt="abc">
                 
             </div>
-            <div id="twitter" onclick="twitter();" class="card" style="border: transparent;width: 200px;height: 190px;display: inline-block;border-radius: 20px;margin-left: 5%;margin-right: 5%; padding-top: 2%;">
+            <div id="twitter" onclick="twitter();" class="card" style="background-color: whitesmoke;border: transparent;width: 200px;height: 190px;display: inline-block;border-radius: 20px;margin-left: 5%;margin-right: 5%; padding-top: 2%;">
                 
                 <img style="border-radius: 120px;width: 140px;display: inline-block;" src="https://firebasestorage.googleapis.com/v0/b/newfyp-c1192.appspot.com/o/124021.png?alt=media&token=777eef73-ee40-4373-ba1e-a934073f4d81" alt="abc">
                 
@@ -518,6 +628,7 @@
         <br><br>
 
     </div>
+    
 
 </div>
 {% else %}

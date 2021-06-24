@@ -2,6 +2,8 @@ from django.urls import path
 from .  import views
 from .views import ArticleDetailView, AddPostView, UpdatePostView, DeletePostView,AddCategoryView, CategoryView
 #HomeView, 
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('', views.home, name="home"),
@@ -29,7 +31,12 @@ urlpatterns = [
     path('facebook/', views.facebook, name="facebook"),
     path('youtube/', views.youtube, name="youtube"),
     path('twitter/', views.twitter, name="twitter"),
+   
+    path('uploadfile/', views.uploadfile, name="uploadfile"),
+    path('logout_view/', views.logout_view, name="logout_view"),
+    path('single/', views.single, name="single"),
     
     
+   
     #path('population-chart/', views.population_chart, name='population-chart'),
 ]
