@@ -99,27 +99,28 @@ def single(request):
     sheet1.write(0, 8, "Comment Likes")
     sheet1.write(0, 9, "Comment Replies")
     sheet1.write(0, 10, "Content")
-    kb.save('Youtube.xls')
+    kb.save('main.xls')
     mi = 1
     mi2 = 1
 
     sheet1.write(mi, 10, request.POST.get("single"))
-    kb.save('Youtube.xls')
+    kb.save('main.xls')
 
     #uploaded_file  = request.FILES['myfile']
     
     #df = uploaded_file.read().decode()
-    df = pd.read_excel('Youtube.xls')
+    df = pd.read_excel('main.xls')
     df = df.astype(str)
     print('File Imported')
 
-    # Preprcoessing
+   
+        # Preprcoessing
     print('\nPreprocessing Started')
     df_2 = proceprocessData(df)
-    df_2['text_lemmatized'] = df_2['Content'].apply(lambda text: lemmatize_words(text))
+    df_2['text_lemmatized'] = df_2['Proprocessed_Content'].apply(lambda text: lemmatize_words(text))
     print('Preprocessing End')
 
-    filter_df = df_2[['text_lemmatized']]
+    filter_df = df_2[['Content', 'text_lemmatized', 'Date Of Post']]
     filter_df = filter_df.astype(str)
     filter_df.drop_duplicates(keep='first', inplace=True)
 
@@ -127,6 +128,7 @@ def single(request):
     # prediction
     Prediction = prediction(filter_df)
     filter_df['Sentiment'] = Prediction
+    filter_df = filter_df[['Content', 'Date Of Post', 'Sentiment']]
     filter_df.to_excel('label.xls', index=False)
 
 
@@ -166,16 +168,27 @@ def single(request):
     #     sentdata[i].save()
     # #    i = i + 1
     try:
-        os.remove("Facebook.xls")
+        os.remove("main.xls")
     except:
         try:
-            os.remove("Twitter.xls")
+            os.remove("main.xls")
         except:
             try:
-                os.remove("Youtube.xls")
+                os.remove("main.xls")
             except:
                 print(".")
-    
+    try:
+        os.remove("main.xls")
+    except:
+        try:
+            os.remove("main.xls")
+        except:
+            print(".")
+
+    try:
+        os.remove("main.xls")
+    except:
+        print(".")
 
     return render(request,'dashboard.html', {'sent':df['Sentiment'][0],'dates':dates, 'all':all})
 
@@ -187,7 +200,7 @@ def uploadfile(request):
     from datetime import date
     import json
     import sys
-
+    import os
     if request.method == 'POST' and request.FILES['myfile']:
         #uploaded_file  = request.FILES['myfile']
         
@@ -196,13 +209,13 @@ def uploadfile(request):
         df = df.astype(str)
         print('File Imported')
 
-        # Preprcoessing
+            # Preprcoessing
         print('\nPreprocessing Started')
         df_2 = proceprocessData(df)
-        df_2['text_lemmatized'] = df_2['Content'].apply(lambda text: lemmatize_words(text))
+        df_2['text_lemmatized'] = df_2['Proprocessed_Content'].apply(lambda text: lemmatize_words(text))
         print('Preprocessing End')
 
-        filter_df = df_2[['text_lemmatized']]
+        filter_df = df_2[['Content', 'text_lemmatized', 'Date Of Post']]
         filter_df = filter_df.astype(str)
         filter_df.drop_duplicates(keep='first', inplace=True)
 
@@ -210,8 +223,8 @@ def uploadfile(request):
         # prediction
         Prediction = prediction(filter_df)
         filter_df['Sentiment'] = Prediction
+        filter_df = filter_df[['Content', 'Date Of Post', 'Sentiment']]
         filter_df.to_excel('label.xls', index=False)
-
 
         import xlrd
         from itertools import islice
@@ -239,60 +252,110 @@ def uploadfile(request):
         i = 1
         # while(sheet.cell_value(i, 0) != None):
         
-        for i in range(0 ,df['text_lemmatized'].size):
+        for i in range(0 ,df['Content'].size):
             sentdata[i] = SentData()
-            sentdata[i].comment = df['text_lemmatized'][i]
+            sentdata[i].comment = str(df['Content'][i]) + "(" + df['Sentiment'][i] + ")"
+            sentdata[i].commentDate = df['Date Of Post'][i]
             sentdata[i].date = dt_string
             sentdata[i].sentiment = df['Sentiment'][i]
             sentdata[i].ownerData = request.user.email + dt_string
             sentdata[i].owner = request.user
             sentdata[i].save()
         #    i = i + 1
+       
+        
+    try:
+        os.remove("main.xls")
+    except:
         try:
-            os.remove("Facebook.xls")
+            os.remove("main.xls")
         except:
             try:
-                os.remove("Twitter.xls")
+                os.remove("main.xls")
             except:
-                try:
-                    os.remove("Youtube.xls")
-                except:
-                    print(".")
-        
+                print(".")
 
-        return render(request,'dashboard.html', {})
+    try:
+        os.remove("main.xls")
+    except:
+        try:
+            os.remove("main.xls")
+        except:
+            print(".")
+
+    try:
+        os.remove("main.xls")
+    except:
+        print(".")
+
+    import tweepy
+    import os
+    import json
+    import sys
+    import geocoder
+
+
+    consumer_key= 'PMCVuv8IoBYZsfE5NC9iTAVUq'
+    consumer_secret= '5LQ00BLIowonJNI4O3iNjQDsO73zTU4RA9jU0P48qYHtKXQ9Sr'
+    access_token= '1178293129734217728-BjQJpZj1hGcWeXMxT4jukac3zsepaA'
+    access_token_secret= '7KvGcqa1rRIu8yXiBK8wyETyjWq1F2HPIU0gS70Ywq245'
+
+    # API Keys and Tokens
+    # consumer_key = os.environ['PMCVuv8IoBYZsfE5NC9iTAVUq']
+    # consumer_secret = os.environ['5LQ00BLIowonJNI4O3iNjQDsO73zTU4RA9jU0P48qYHtKXQ9Sr']
+    # access_token = os.environ['1178293129734217728']
+    # access_token_secret = os.environ['7KvGcqa1rRIu8yXiBK8wyETyjWq1F2HPIU0gS70Ywq245']
+
+    # Authorization and Authentication
+    auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
+    auth.set_access_token(access_token, access_token_secret)
+    api = tweepy.API(auth)
+
+    # Available Locations
+    available_loc = api.trends_available()
+    # writing a JSON file that has the available trends around the world
+    with open("available_locs_for_trend.json","w") as wp:
+        wp.write(json.dumps(available_loc, indent=1))
+
+    # Trends for Specific Country
+    #loc = sys.argv[1]     # location as argument variable 
+    loc = 'Pakistan'
+    g = geocoder.osm(loc) # getting object that has location's latitude and longitude
+    all = []
+    closest_loc = api.trends_closest(g.lat, g.lng)
+    trends = api.trends_place(closest_loc[0]['woeid'])
+    
+    for i in range(0,10):
+        all.append(trends[0]['trends'][i]['name'])
+    
+    # writing a JSON file that has the latest trends for that location
+    # with open("twitter_{}_trend.json".format(loc),"w") as wp:
+    #     wp.write(json.dumps(trends, indent=1))
+    dates = SentData.objects.values('date').distinct().filter(owner=request.user).reverse()
+
+    return render(request,'dashboard.html', {'dates':dates, 'all':all})
     
 def startanalysis(request):
-    
+            
    
     # import pandas as pd
 
     # Filename = filename.csv
 
-    # importing data
-    try:
-        df = pd.read_excel('Facebook.xls')
-    except:
-        try:
-            df = pd.read_excel('Twitter.xls')
-        except:
-            try:
-                df = pd.read_excel('Youtube.xls')
-            except:
-                print(".")
-    
+   
+    df = pd.read_excel('main.xls')
     
         
     df = df.astype(str)
     print('File Imported')
 
-    # Preprcoessing
+        # Preprcoessing
     print('\nPreprocessing Started')
     df_2 = proceprocessData(df)
-    df_2['text_lemmatized'] = df_2['Content'].apply(lambda text: lemmatize_words(text))
+    df_2['text_lemmatized'] = df_2['Proprocessed_Content'].apply(lambda text: lemmatize_words(text))
     print('Preprocessing End')
 
-    filter_df = df_2[['text_lemmatized']]
+    filter_df = df_2[['Content', 'text_lemmatized', 'Date Of Post']]
     filter_df = filter_df.astype(str)
     filter_df.drop_duplicates(keep='first', inplace=True)
 
@@ -300,8 +363,8 @@ def startanalysis(request):
     # prediction
     Prediction = prediction(filter_df)
     filter_df['Sentiment'] = Prediction
+    filter_df = filter_df[['Content', 'Date Of Post', 'Sentiment']]
     filter_df.to_excel('label.xls', index=False)
-
 
     import xlrd
     from itertools import islice
@@ -337,9 +400,10 @@ def startanalysis(request):
     i = 1
     # while(sheet.cell_value(i, 0) != None):
     
-    for i in range(0 ,df['text_lemmatized'].size):
+    for i in range(0 ,df['Content'].size):
         sentdata[i] = SentData()
-        sentdata[i].comment = df['text_lemmatized'][i]
+        sentdata[i].comment = str(df['Content'][i]) + "(" + df['Sentiment'][i] + ")"
+        sentdata[i].commentDate = df['Date Of Post'][i]
         sentdata[i].date = dt_string
         sentdata[i].sentiment = df['Sentiment'][i]
         sentdata[i].ownerData = request.user.email + dt_string
@@ -347,18 +411,73 @@ def startanalysis(request):
         sentdata[i].save()
     #    i = i + 1
     try:
-        os.remove("Facebook.xls")
+        os.remove("main.xls")
     except:
         try:
-            os.remove("Twitter.xls")
+            os.remove("main.xls")
         except:
             try:
-                os.remove("Youtube.xls")
+                os.remove("main.xls")
             except:
                 print(".")
-    
+    try:
+        os.remove("main.xls")
+    except:
+        try:
+            os.remove("main.xls")
+        except:
+            print(".")
+    try:
+        os.remove("main.xls")
+    except:
+        print(".")
 
-    return render(request,'dashboard.html', {})
+    import tweepy
+    import os
+    import json
+    import sys
+    import geocoder
+
+
+    consumer_key= 'PMCVuv8IoBYZsfE5NC9iTAVUq'
+    consumer_secret= '5LQ00BLIowonJNI4O3iNjQDsO73zTU4RA9jU0P48qYHtKXQ9Sr'
+    access_token= '1178293129734217728-BjQJpZj1hGcWeXMxT4jukac3zsepaA'
+    access_token_secret= '7KvGcqa1rRIu8yXiBK8wyETyjWq1F2HPIU0gS70Ywq245'
+
+    # API Keys and Tokens
+    # consumer_key = os.environ['PMCVuv8IoBYZsfE5NC9iTAVUq']
+    # consumer_secret = os.environ['5LQ00BLIowonJNI4O3iNjQDsO73zTU4RA9jU0P48qYHtKXQ9Sr']
+    # access_token = os.environ['1178293129734217728']
+    # access_token_secret = os.environ['7KvGcqa1rRIu8yXiBK8wyETyjWq1F2HPIU0gS70Ywq245']
+
+    # Authorization and Authentication
+    auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
+    auth.set_access_token(access_token, access_token_secret)
+    api = tweepy.API(auth)
+
+    # Available Locations
+    available_loc = api.trends_available()
+    # writing a JSON file that has the available trends around the world
+    with open("available_locs_for_trend.json","w") as wp:
+        wp.write(json.dumps(available_loc, indent=1))
+
+    # Trends for Specific Country
+    #loc = sys.argv[1]     # location as argument variable 
+    loc = 'Pakistan'
+    g = geocoder.osm(loc) # getting object that has location's latitude and longitude
+    all = []
+    closest_loc = api.trends_closest(g.lat, g.lng)
+    trends = api.trends_place(closest_loc[0]['woeid'])
+    
+    for i in range(0,10):
+        all.append(trends[0]['trends'][i]['name'])
+    
+    # writing a JSON file that has the latest trends for that location
+    # with open("twitter_{}_trend.json".format(loc),"w") as wp:
+    #     wp.write(json.dumps(trends, indent=1))
+    dates = SentData.objects.values('date').distinct().filter(owner=request.user).reverse()
+
+    return render(request,'dashboard.html', {'dates':dates, 'all':all})
 
 def youtube(request):
     from selenium import webdriver
@@ -381,6 +500,30 @@ def youtube(request):
     from selenium.webdriver.common.by import By
     from selenium.webdriver.support import expected_conditions as EC
     from selenium.webdriver.common.keys import Keys
+    import os
+
+    try:
+        os.remove("main.xls")
+    except:
+        try:
+            os.remove("main.xls")
+        except:
+            try:
+                os.remove("main.xls")
+            except:
+                print(".")
+    try:
+        os.remove("main.xls")
+    except:
+        try:
+            os.remove("main.xls")
+        except:
+            print(".")
+    try:
+        os.remove("main.xls")
+    except:
+        print(".")
+
 
     start_time = time.time()
     opts = selenium.webdriver.ChromeOptions()
@@ -430,7 +573,7 @@ def youtube(request):
     sheet1.write(0, 8, "Comment Likes")
     sheet1.write(0, 9, "Comment Replies")
     sheet1.write(0, 10, "Content")
-    kb.save('Youtube.xls')
+    kb.save('main.xls')
     mi = 1
     mi2 = 1
     #login = driver.find_element_by_id("yt-simple-endpoint style-scope ytd-button-renderer")
@@ -546,13 +689,13 @@ def youtube(request):
     for span in search_input:
         #    print(span.text)
             sheet1.write(mi, 10, span.text)
-            kb.save('Youtube.xls')
+            kb.save('main.xls')
             mi = mi + 1
     
     for span2 in commentdate:
         #    print(span.text)
             sheet1.write(mi2, 1, span2.text)
-            kb.save('Youtube.xls')
+            kb.save('main.xls')
             mi2 = mi2 + 1
             print(mi2)
 
@@ -606,6 +749,29 @@ def facebook(request):
     import sys
     from fake_useragent import UserAgent
 
+    import os
+
+    try:
+        os.remove("main.xls")
+    except:
+        try:
+            os.remove("main.xls")
+        except:
+            try:
+                os.remove("main.xls")
+            except:
+                print(".")
+    try:
+        os.remove("main.xls")
+    except:
+        try:
+            os.remove("main.xls")
+        except:
+            print(".")
+    try:
+        os.remove("main.xls")
+    except:
+        print(".")
 
     start_time = time.time()
     #chrome_options = Options()
@@ -633,7 +799,7 @@ def facebook(request):
     postLink = request.POST.get("postlink")
     postCount = request.POST.get("postCount")
     postLink = postLink.replace("https://www.", "https://mbasic.")
-
+    postLink = postLink.replace("https://web.", "https://mbasic.")
     #driver.get("https://mbasic.facebook.com/bbcnews/posts/10158670908802217")
     driver.get(postLink)
     
@@ -656,7 +822,7 @@ def facebook(request):
     sheet1.write(0, 8, "Comment Likes")
     sheet1.write(0, 9, "Comment Replies")
     sheet1.write(0, 10, "Content")
-    kb.save('Facebook.xls')
+    kb.save('main.xls')
     mi = 1
     mi2 = 1
     try:
@@ -714,7 +880,7 @@ def facebook(request):
         for span in search_input:
             #print(span.text)
             sheet1.write(mi, 10, span.text)
-            kb.save('Facebook.xls')
+            kb.save('main.xls')
             mi = mi + 1
 
             temp = temp + 1
@@ -722,7 +888,7 @@ def facebook(request):
         for span2 in commentdate:
             #    print(span.text)
                 sheet1.write(mi2, 1, span2.text)
-                kb.save('Facebook.xls')
+                kb.save('main.xls')
                 mi2 = mi2 + 1
                 print(mi2)
         
@@ -805,6 +971,30 @@ def twitter(request):
     from selenium.webdriver.support import expected_conditions as EC
     from selenium.webdriver.common.keys import Keys
 
+    import os
+
+    try:
+        os.remove("main.xls")
+    except:
+        try:
+            os.remove("main.xls")
+        except:
+            try:
+                os.remove("main.xls")
+            except:
+                print(".")
+    try:
+        os.remove("main.xls")
+    except:
+        try:
+            os.remove("main.xls")
+        except:
+            print(".")
+    try:
+        os.remove("main.xls")
+    except:
+        print(".")
+
     start_time = time.time()
     postLink3 = request.POST.get("postlink3")
     date_since = request.POST.get("postCount3")
@@ -829,7 +1019,7 @@ def twitter(request):
     sheet1.write(0, 8, "Comment Likes")
     sheet1.write(0, 9, "Comment Replies")
     sheet1.write(0, 10, "Content")
-    kb.save('Twitter.xls')
+    kb.save('main.xls')
     mi = 1
     mi2 = 1
     #login = driver.find_element_by_id("yt-simple-endpoint style-scope ytd-button-renderer")
@@ -879,7 +1069,7 @@ def twitter(request):
         sheet1.write(mi, 10, tweet.text)
         date = (str(tweet.author.created_at).split(' '))
         sheet1.write(mi2, 1, date[0])
-        kb.save('Twitter.xls')
+        kb.save('main.xls')
         mi = mi + 1
         mi2 = mi2 + 1
         temp = temp + 1
@@ -961,19 +1151,19 @@ def pie_chart(request):
 
     labels2 = []
     data2 = []
-
+    
     #queryset = SentData.objects.order_by('-sentiment')[:5]
 
     queryset = SentData.objects.filter(sentiment="What about those who drive")
     count = SentData.objects.values('sentiment').distinct().count()
-    p = SentData.objects.values('sentiment').distinct().filter(owner=request.user, date="21/06/2021 13:04:36")
+    p = SentData.objects.values('sentiment').distinct().filter(owner=request.user, date=request.POST.get("DATE"))
     
-    count2 = SentData.objects.values('date').distinct().count()
-    p2 = SentData.objects.values('date').distinct().filter(owner=request.user)
+    count2 = SentData.objects.values('commentDate').distinct().count()
+    p2 = SentData.objects.values('commentDate').distinct().filter(owner=request.user, date=request.POST.get("DATE"))
     
     #size = SentData.objects.values('comment').count()
-    comments = SentData.objects.values('comment')
-    #sentiments = SentData.objects.values('sentiment')
+    comments = SentData.objects.values('comment').filter(owner=request.user, date=request.POST.get("DATE"))
+    sentiments = SentData.objects.values('sentiment')
     
     
     q  = 0
@@ -981,12 +1171,12 @@ def pie_chart(request):
 
     for i in p:
         labels.append(i['sentiment'])
-        q = SentData.objects.filter(sentiment=i['sentiment']).filter(owner=request.user, date="21/06/2021 13:04:36").count()
+        q = SentData.objects.filter(sentiment=i['sentiment']).filter(owner=request.user, date=request.POST.get("DATE")).count()
         data.append(q)
 
     for i2 in p2:
-        labels2.append(i2['date'])
-        q2 = SentData.objects.filter(date=i2['date']).filter(owner=request.user).count()
+        labels2.append(i2['commentDate'])
+        q2 = SentData.objects.filter(commentDate=i2['commentDate']).filter(owner=request.user, date=request.POST.get("DATE")).count()
         data2.append(q2)
 
     d = dict()
@@ -996,6 +1186,52 @@ def pie_chart(request):
     #     #labels.append(city.sentiment) 
     #     data.append(count[city])
 
+    import tweepy
+    import os
+    import json
+    import sys
+    import geocoder
+
+
+    consumer_key= 'PMCVuv8IoBYZsfE5NC9iTAVUq'
+    consumer_secret= '5LQ00BLIowonJNI4O3iNjQDsO73zTU4RA9jU0P48qYHtKXQ9Sr'
+    access_token= '1178293129734217728-BjQJpZj1hGcWeXMxT4jukac3zsepaA'
+    access_token_secret= '7KvGcqa1rRIu8yXiBK8wyETyjWq1F2HPIU0gS70Ywq245'
+
+    # API Keys and Tokens
+    # consumer_key = os.environ['PMCVuv8IoBYZsfE5NC9iTAVUq']
+    # consumer_secret = os.environ['5LQ00BLIowonJNI4O3iNjQDsO73zTU4RA9jU0P48qYHtKXQ9Sr']
+    # access_token = os.environ['1178293129734217728']
+    # access_token_secret = os.environ['7KvGcqa1rRIu8yXiBK8wyETyjWq1F2HPIU0gS70Ywq245']
+
+    # Authorization and Authentication
+    auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
+    auth.set_access_token(access_token, access_token_secret)
+    api = tweepy.API(auth)
+
+    # Available Locations
+    available_loc = api.trends_available()
+    # writing a JSON file that has the available trends around the world
+    with open("available_locs_for_trend.json","w") as wp:
+        wp.write(json.dumps(available_loc, indent=1))
+
+    # Trends for Specific Country
+    #loc = sys.argv[1]     # location as argument variable 
+    loc = 'Pakistan'
+    g = geocoder.osm(loc) # getting object that has location's latitude and longitude
+    all = []
+    closest_loc = api.trends_closest(g.lat, g.lng)
+    trends = api.trends_place(closest_loc[0]['woeid'])
+    
+    for i in range(0,10):
+        all.append(trends[0]['trends'][i]['name'])
+    
+    # writing a JSON file that has the latest trends for that location
+    # with open("twitter_{}_trend.json".format(loc),"w") as wp:
+    #     wp.write(json.dumps(trends, indent=1))
+    dates = SentData.objects.values('date').distinct().filter(owner=request.user).reverse()
+
+   
     return render(request, 'pie_chart.html', {
         'labels': labels,
         'data': data,
@@ -1008,6 +1244,8 @@ def pie_chart(request):
         'data2': data2,
         'comments': comments,
         'sentiments':sentiments,
+        'dates':dates, 'all':all,
+        'DATE':request.POST.get("DATE"),
     })
 
 #def line_chart(request):

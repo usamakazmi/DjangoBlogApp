@@ -99,7 +99,7 @@ def lemmatize_words(text):
 
 def proceprocessData(df):
     temp_df = df
-    temp_df['Content'] = temp_df['Content'].apply(lambda text: cleanData(text))
+    temp_df['Proprocessed_Content'] = temp_df['Content'].apply(lambda text: cleanData(text))
     temp_df.drop_duplicates(inplace=True)
     # temp_df.isna()
     temp_df.dropna()

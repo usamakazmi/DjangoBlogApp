@@ -6,6 +6,7 @@ from datetime import datetime, date
 
 class SentData(models.Model):
     comment = models.TextField()
+    commentDate = models.CharField(max_length = 255)
     date = models.CharField(max_length = 255)
     sentiment = models.CharField(max_length = 255)
     ownerData = models.CharField(max_length = 255)

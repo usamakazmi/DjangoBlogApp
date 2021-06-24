@@ -168,6 +168,7 @@
     #list li:nth-child(even){background: #FFF;font-size: large; padding: 2%;}
     
 </style>
+
 <script type="text/javascript">
     function spinner() {
         document.getElementsByClassName("loader")[0].style.display = "block";
@@ -355,24 +356,17 @@
                 <h5 style="color: black;">
                     <ol id="list">
                         
-                    
+                        
                     {% for date in dates %}
                         <li id="list">
-                        {{date.date}}
+                        <form method="post" enctype="multipart/form-data" action="{% url 'pie-chart' %}">
+                            {% csrf_token %}
+                            <input type="text" name="DATE" value='{{date.date}}' style="display:none;" required>
+                            <button style="width: 100%;border-radius: 25px;border: transparent;background-color: transparent" type="submit">{{date.date}}</button>
+                        </form>
                         </li>
                     {% endfor %}
 
-                    {% for date in dates %}
-                    <li id="list">
-                    {{date.date}}
-                    </li>
-                     {% endfor %}
-
-                     {% for date in dates %}
-                     <li id="list">
-                     {{date.date}}
-                     </li>
-                      {% endfor %}
                      </ol>
                 </h5>
             </div>

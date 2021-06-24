@@ -2,27 +2,26 @@
 
 {% block content %}
 <br>
-<h1>{{p}}</h1>
+<!--h1>{{p}}</h1>
 <h1>{{count}}</h1>
 <h1>{{labels}}</h1>
 <h1>{{data}}</h1>
-<h1>{{q}}</h1>
+<h1>{{q}}</h1-->
 
 <style>
   #list li:nth-child(odd){background: whitesmoke;font-size: large; padding: 2%;}
   #list li:nth-child(even){background: #FFF;font-size: large; padding: 2%;}
   
 </style>
-<h5>
-  {% for sentiment in sentiments %}
-    {{sentiment.sentiment}}
-    <br>
-  {% endfor %}
-</h5>
 
+<h1 class="text-center" style="font-family: 'Brush Script MT', cursive;">Insights</h1>
+<h4  class="text-center" style="font-family: 'Brush Script MT', cursive;">({{DATE}})</h4>
+<br>
 <div class="row" style="position: relative;margin-left: 3.5%;margin-right: 0.5%;">
       
-  <div class="card col-sm-7 px-5 py-3 mx-3" style="overflow-y: scroll;overflow-x: scroll;border-radius: 20px;height: 500px;" >
+  <div class="card col-sm-6 px-5 py-3 mx-2" style="overflow-y: scroll;overflow-x: scroll;border-radius: 20px;height: 500px;" >
+      <br>
+      <h3 class="text-center" style="font-family: 'Brush Script MT', cursive;">Data Table</h3><hr>
       <ol id="list">
         {% for comment in comments %}
         <li id="list">
@@ -33,95 +32,128 @@
       
       </ol>
   </div>
+    <div class="card col-sm-5 px-5 py-3 mx-3" style="border-radius: 20px;height: 500px;">
+      <br>
+      <h3 class="text-center" style="font-family: 'Brush Script MT', cursive;">My Work History</h3><hr>
+      <div style="overflow-y: scroll">
+          <h5 style="color: black;">
+              <ol id="list">
+                  
+                  
+              {% for date in dates %}
+                  <li id="list">
+                  <form method="post" enctype="multipart/form-data" action="{% url 'pie-chart' %}">
+                      {% csrf_token %}
+                      <input type="text" name="DATE" value='{{date.date}}' style="display:none;" required>
+                      <button style="width: 100%;border-radius: 25px;border: transparent;background-color: transparent" type="submit">{{date.date}}</button>
+                  </form>
+                  </li>
+              {% endfor %}
+    
+              </ol>
+          </h5>
+      </div>
+    </div>
 
 </div>
 
-    <h1 class="text-center">Radar Graphs</h1>
+
+    
     
     <br>
-    
-<div class="card" style="height: 100%;width: 90%;border-radius: 2%;margin-left: 5%;margin-right: 10%;padding-top: 2%;padding-bottom: 2%;margin-bottom: 5%;">
-  
-  <h4 class="text-center">Comments by Emotions</h4>
-  <br>
+    <div class="row" style="position: relative;margin-left: 5%;">
+      <div class="card col-sm-5" style="border-radius: 20px;height: 500px;margin-right: 2%;">
+        <br>
+        <h4 class="text-center">Comments by Emotions</h4>
+        <br>
+            
+              <div >
+                  <div id="container" style="width: 100%;">
+                      <canvas id="pie-chart" style="width: 200px;height: 150px;"></canvas>
+                  </div>
+                  
+                  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+                  <script>
+                      var config = {
+                          type: 'radar',
+                          data: {
+                            datasets: [{
+                              data: {{ data|safe }},
+                              backgroundColor: 'rgba(0,191,255 ,0.3)',
+                              label: 'No of Comments',
+                              borderColor: 'dodgerblue',
+                              pointBackgroundColor: 'dodgerblue',
+                            }],
+                            labels: {{ labels|safe }}
+                          },
+                          options: {
+                            responsive: true
+                          }
+                        };
       
-        <div style="padding-left: 15%;">
-            <div id="container" style="width: 75%;">
-                <canvas id="pie-chart" style="width: 200px;height: 150px;"></canvas>
+                        window.onload = function() {
+                          var ctx = document.getElementById('pie-chart').getContext('2d');
+                          window.myPie = new Chart(ctx, config);
+      
+                          var ctx2 = document.getElementById('pie-chart2').getContext('2d');
+                          window.myPie = new Chart(ctx2, config2);
+      
+                          var ctx3 = document.getElementById('population-chart').getContext('2d');
+                          window.myBar = new Chart(ctx3, config3);
+      
+                          var ctx4 = document.getElementById('line-chart').getContext('2d');
+                          window.myBar = new Chart(ctx4, config4);
+                        
+                          var ctx5 = document.getElementById('pie-chart3').getContext('2d');
+                          window.myPie = new Chart(ctx5, config5);
+                        };
+      
+                      </script>
+      
+                  </script>
+              </div>
+      </div>
+      <div class="card col-sm-6" style="border-radius: 20px;height: 500px;">
+        <br>
+        <h4 class="text-center">Comments by Date</h4>
+        <br>
+        
+      
+          <div >
+            <div id="container" style="width: 100%;">
+                <canvas id="pie-chart3" style="width: 200px;height: 150px;"></canvas>
             </div>
             
             <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
             <script>
-                var config = {
+                var config5 = {
                     type: 'radar',
                     data: {
                       datasets: [{
-                        data: {{ data|safe }},
+                        data: {{ data2|safe }},
                         backgroundColor: 'rgba(0,191,255 ,0.3)',
                         label: 'No of Comments',
                         borderColor: 'dodgerblue',
                         pointBackgroundColor: 'dodgerblue',
                       }],
-                      labels: {{ labels|safe }}
+                      labels: {{ labels2|safe }}
                     },
                     options: {
                       responsive: true
                     }
                   };
-
-                  window.onload = function() {
-                    var ctx = document.getElementById('pie-chart').getContext('2d');
-                    window.myPie = new Chart(ctx, config);
-
-                    var ctx2 = document.getElementById('pie-chart2').getContext('2d');
-                    window.myPie = new Chart(ctx2, config2);
-
-                    var ctx3 = document.getElementById('population-chart').getContext('2d');
-                    window.myBar = new Chart(ctx3, config3);
-
-                    var ctx4 = document.getElementById('line-chart').getContext('2d');
-                    window.myBar = new Chart(ctx4, config4);
-                  
-                    var ctx5 = document.getElementById('pie-chart3').getContext('2d');
-                    window.myPie = new Chart(ctx5, config5);
-                  };
-
+  
+                
                 </script>
-
+  
             </script>
         </div>
-        <hr>
-        <div style="padding-left: 15%;">
-          <div id="container" style="width: 75%;">
-              <canvas id="pie-chart3" style="width: 200px;height: 150px;"></canvas>
-          </div>
-          
-          <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
-          <script>
-              var config5 = {
-                  type: 'radar',
-                  data: {
-                    datasets: [{
-                      data: {{ data2|safe }},
-                      backgroundColor: 'rgba(0,191,255 ,0.3)',
-                      label: 'No of Comments',
-                      borderColor: 'dodgerblue',
-                      pointBackgroundColor: 'dodgerblue',
-                    }],
-                    labels: {{ labels2|safe }}
-                  },
-                  options: {
-                    responsive: true
-                  }
-                };
-
-              
-              </script>
-
-          </script>
       </div>
-  <h4 class="text-center">Comments by Date</h4>
-  <br>
+    </div>
+    
+<div class="card" style="height: 100%;width: 90%;border-radius: 2%;margin-left: 5%;margin-right: 10%;padding-top: 2%;padding-bottom: 2%;">
+  
+  
       
         <div style="padding-left: 15%;">
             <div id="container" style="width: 75%;">
@@ -160,79 +192,86 @@
         </div>
 
         
-        <div style="padding-left: 15%;">
-          <div id="container" style="width: 75%;">
-              <canvas id="population-chart" style="width: 800px;height: 600px;"></canvas>
-          </div>
+  
+</div>
 
-          <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
-          <script>
-            var config3 = {
-                type: 'bar',
-                data: {
-                  datasets: [{
-                    data: {{ data|safe }},
-                    backgroundColor: [
-                      'dodgerblue', 'deepskyblue', '#9AFEFF', '#7FFFD4','#00FFFF',
-                      '#7DFDFE','#57FEFF','#8EEBEC','#50EBEC','#4EE2EC','#81D8D0',
-                      '#92C7C7','#77BFC7','#78C7C7','#48CCCD','#43C6DB','#46C7C7',
-                      '#7BCCB5','#43BFC7','#3EA99F','#3B9C9C','#438D80','#348781',
-                      '#307D7E','#5E7D7E','#4C787E','#008080', '#4E8975','#78866B',
-                      '#848b79','#617C58',
-                    ],
-                    label: 'Population'
-                  }],
-                  labels: {{ labels|safe }}
-                },
-                options: {
-                  responsive: true
-                }
-              };
-
-          </script>
+        
+<div class="row" style="position: relative;margin-left: 5%;margin-bottom: 5%;">
+  <div class="card col-sm-5 mx-1" style="border-radius: 20px;height: 350px;">
+    <div >
+      <div id="container" style="width: 100%;">
+          <canvas id="line-chart" style="width: 800px;height: 600px;"></canvas>
       </div>
 
+      <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+      <script>
 
-      <div style="padding-left: 15%;">
-        <div id="container" style="width: 75%;">
-            <canvas id="line-chart" style="width: 800px;height: 600px;"></canvas>
-        </div>
+          var config4 = {
+          type: 'line',
+          data: {
+              datasets: [{
+              data: {{ data|safe }},
+              fill: false,
+                  lineTension: 0.1,
+                  backgroundColor: "rgba(75, 192, 192, 0.4)",
+                  borderColor: "rgba(75, 192, 192, 1)",
+                  borderCapStyle: 'butt',
+                  borderDash: [],
+                  borderDashOffset: 0.0,
+                  borderJoinStyle: 'miter',
+                  pointBorderColor: "rgba(75,192,192,1)",
+                  pointBackgroundColor: "#fff",
+                  pointBorderWidth: 1,
+                  pointHoverRadius: 5,
+                  pointHitRadius: 10,
+                  label: 'Population',
+              }],
+              labels: {{ labels|safe }}
+          },
+          options: {
+              responsive: true
+          }
+          };
 
-        <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
-        <script>
+    
 
-            var config4 = {
-            type: 'line',
+      </script>
+  </div>
+  </div>
+  <div class="card col-sm-6 mx-1" style="border-radius: 20px;height: 400px;">
+    <div >
+      <div id="container" style="100%;">
+          <canvas id="population-chart" style="width: 800px;height: 600px;"></canvas>
+      </div>
+
+      <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+      <script>
+        var config3 = {
+            type: 'bar',
             data: {
-                datasets: [{
+              datasets: [{
                 data: {{ data|safe }},
-                fill: false,
-                    lineTension: 0.1,
-                    backgroundColor: "rgba(75, 192, 192, 0.4)",
-                    borderColor: "rgba(75, 192, 192, 1)",
-                    borderCapStyle: 'butt',
-                    borderDash: [],
-                    borderDashOffset: 0.0,
-                    borderJoinStyle: 'miter',
-                    pointBorderColor: "rgba(75,192,192,1)",
-                    pointBackgroundColor: "#fff",
-                    pointBorderWidth: 1,
-                    pointHoverRadius: 5,
-                    pointHitRadius: 10,
-                    label: 'Population',
-                }],
-                labels: {{ labels|safe }}
+                backgroundColor: [
+                  'dodgerblue', 'deepskyblue', '#9AFEFF', '#7FFFD4','#00FFFF',
+                  '#7DFDFE','#57FEFF','#8EEBEC','#50EBEC','#4EE2EC','#81D8D0',
+                  '#92C7C7','#77BFC7','#78C7C7','#48CCCD','#43C6DB','#46C7C7',
+                  '#7BCCB5','#43BFC7','#3EA99F','#3B9C9C','#438D80','#348781',
+                  '#307D7E','#5E7D7E','#4C787E','#008080', '#4E8975','#78866B',
+                  '#848b79','#617C58',
+                ],
+                label: 'Population'
+              }],
+              labels: {{ labels|safe }}
             },
             options: {
-                responsive: true
+              responsive: true
             }
-            };
+          };
 
-      
-
-        </script>
-    </div>
-       
+      </script>
+  </div>
+  </div>
 </div>
+     
 <br><br><br>
 {% endblock %}
